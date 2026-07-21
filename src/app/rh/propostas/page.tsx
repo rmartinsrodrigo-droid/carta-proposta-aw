@@ -1,6 +1,11 @@
+'use client'
+
 import Link from 'next/link'
-import { propostasMock, fmtBRL, fmtRelativo } from '@/lib/mock/propostas'
+import { useState } from 'react'
+import { fmtBRL, fmtRelativo } from '@/lib/mock/propostas'
+import { usePropostas } from '@/lib/mock/propostas-store'
 import { StatusBadge } from '@/components/rh/StatusBadge'
+import { AcoesProposta } from '@/components/rh/AcoesProposta'
 import type { PropostaStatus } from '@/types/proposta'
 
 const filtros: Array<{ label: string; status: PropostaStatus | 'todas' }> = [
@@ -11,17 +16,17 @@ const filtros: Array<{ label: string; status: PropostaStatus | 'todas' }> = [
   { label: 'Aceitas', status: 'aceita' },
   { label: 'Recusadas', status: 'recusada' },
   { label: 'Expiradas', status: 'expirada' },
+  { label: 'Canceladas', status: 'cancelada' },
 ]
 
-export default async function PropostasPage({
-  searchParams,
-}: {
-  searchParams: Promise<{ filtro?: string; q?: string }>
-}) {
-  const { filtro = 'todas', q = '' } = await searchParams
+export default function PropostasPage() {
+  const propostas = usePropostas()
+  const [filtro, setFiltro] = useState<PropostaStatus | 'todas'>('todas')
+  const [q, setQ] = useState('')
+
   const busca = q.trim().toLowerCase()
 
-  const lista = propostasMock
+  const lista = propostas
     .filter((p) => (filtro === 'todas' ? true : p.status === filtro))
     .filter((p) =>
       busca
@@ -39,7 +44,7 @@ export default async function PropostasPage({
           <div className="text-[11px] tracking-[0.18em] uppercase text-aw-tiffany-forte">Propostas</div>
           <h1 className="text-3xl font-bold mt-1 tracking-tight">Todas as propostas</h1>
           <p className="text-aw-grafite mt-1 text-sm">
-            {lista.length} de {propostasMock.length} propostas
+            {lista.length} de {propostas.length} propostas
           </p>
         </div>
         <Link
@@ -54,17 +59,14 @@ export default async function PropostasPage({
         </Link>
       </div>
 
-      {/* Filtros e busca */}
       <div className="flex flex-wrap items-center gap-2 mb-6">
         {filtros.map((f) => {
           const active = filtro === f.status
           return (
-            <Link
+            <button
               key={f.status}
-              href={{
-                pathname: '/rh/propostas',
-                query: { ...(f.status !== 'todas' && { filtro: f.status }), ...(busca && { q: busca }) },
-              }}
+              type="button"
+              onClick={() => setFiltro(f.status)}
               className={`px-3.5 py-1.5 text-xs font-semibold uppercase tracking-wider border transition-colors ${
                 active
                   ? 'bg-aw-preto text-aw-branco border-aw-preto'
@@ -72,22 +74,18 @@ export default async function PropostasPage({
               }`}
             >
               {f.label}
-            </Link>
+            </button>
           )
         })}
-        <form className="ml-auto" method="get">
-          {filtro !== 'todas' && <input type="hidden" name="filtro" value={filtro} />}
-          <input
-            type="text"
-            name="q"
-            defaultValue={busca}
-            placeholder="Buscar por nome, cargo ou email…"
-            className="w-72 px-4 py-2 text-sm bg-white border border-aw-prata/40 focus:outline-none focus:border-aw-preto placeholder:text-aw-prata"
-          />
-        </form>
+        <input
+          type="text"
+          value={q}
+          onChange={(e) => setQ(e.target.value)}
+          placeholder="Buscar por nome, cargo ou email…"
+          className="ml-auto w-72 px-4 py-2 text-sm bg-white border border-aw-prata/40 focus:outline-none focus:border-aw-preto placeholder:text-aw-prata"
+        />
       </div>
 
-      {/* Tabela */}
       <div className="bg-white border border-aw-prata/30">
         <table className="w-full">
           <thead>
@@ -140,9 +138,7 @@ export default async function PropostasPage({
                   {fmtRelativo(p.atualizada_em)}
                 </td>
                 <td className="px-6 py-3.5">
-                  <Link href={`/rh/propostas/${p.id}`} className="text-aw-grafite hover:text-aw-preto">
-                    →
-                  </Link>
+                  <AcoesProposta proposta={p} modo="menu" />
                 </td>
               </tr>
             ))}

@@ -5,6 +5,7 @@ export type PropostaStatus =
   | 'aceita'
   | 'recusada'
   | 'expirada'
+  | 'cancelada'
 
 export type Beneficio = {
   titulo: string

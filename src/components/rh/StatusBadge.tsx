@@ -7,6 +7,7 @@ const style: Record<PropostaStatus, { bg: string; text: string; label: string }>
   aceita: { bg: 'bg-aw-tiffany', text: 'text-aw-preto', label: 'Aceita' },
   recusada: { bg: 'bg-red-100', text: 'text-red-900', label: 'Recusada' },
   expirada: { bg: 'bg-neutral-800', text: 'text-neutral-200', label: 'Expirada' },
+  cancelada: { bg: 'bg-neutral-300', text: 'text-neutral-800', label: 'Cancelada' },
 }
 
 export function StatusBadge({ status }: { status: PropostaStatus }) {

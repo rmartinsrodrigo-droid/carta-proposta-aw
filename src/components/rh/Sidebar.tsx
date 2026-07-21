@@ -1,7 +1,8 @@
 'use client'
 
 import Link from 'next/link'
-import { usePathname } from 'next/navigation'
+import { useRouter, usePathname } from 'next/navigation'
+import { iniciais, type UsuarioRh } from '@/lib/mock/usuarios'
 
 const items = [
   {
@@ -39,7 +40,6 @@ const items = [
         <path d="M16 3.13a4 4 0 0 1 0 7.75" />
       </svg>
     ),
-    disabled: true,
   },
   {
     href: '/rh/configuracoes',
@@ -50,12 +50,19 @@ const items = [
         <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z" />
       </svg>
     ),
-    disabled: true,
   },
 ]
 
-export function RhSidebar() {
+export function RhSidebar({ user }: { user: UsuarioRh }) {
   const pathname = usePathname()
+  const router = useRouter()
+
+  const sair = () => {
+    document.cookie = 'rh_email=; path=/; max-age=0'
+    document.cookie = 'rh_nome=; path=/; max-age=0'
+    router.push('/')
+    router.refresh()
+  }
 
   return (
     <aside className="w-64 shrink-0 bg-aw-preto text-aw-branco flex flex-col min-h-screen">
@@ -70,21 +77,6 @@ export function RhSidebar() {
             pathname === item.href ||
             (item.href !== '/rh/dashboard' && pathname?.startsWith(item.href) === true)
           const baseCls = 'flex items-center gap-3 px-6 py-3 text-sm font-medium transition-colors'
-          if (item.disabled) {
-            return (
-              <div
-                key={item.href}
-                className={`${baseCls} text-white/30 cursor-not-allowed`}
-                aria-disabled
-              >
-                {item.icon}
-                {item.label}
-                <span className="ml-auto text-[9px] font-bold tracking-wider uppercase text-white/25">
-                  em breve
-                </span>
-              </div>
-            )
-          }
           return (
             <Link
               key={item.href}
@@ -102,16 +94,28 @@ export function RhSidebar() {
         })}
       </nav>
 
-      <div className="p-4 border-t border-white/10">
+      <div className="p-4 border-t border-white/10 space-y-3">
         <div className="flex items-center gap-3 px-2 py-2">
-          <div className="w-8 h-8 bg-aw-tiffany text-aw-preto flex items-center justify-center font-bold text-sm">
-            AS
+          <div className="w-9 h-9 bg-aw-tiffany text-aw-preto flex items-center justify-center font-bold text-sm shrink-0">
+            {iniciais(user.nome)}
           </div>
           <div className="min-w-0 flex-1">
-            <div className="text-sm font-semibold truncate">Ana Silva</div>
-            <div className="text-[11px] text-aw-prata truncate">ana.silva@awnet.com.br</div>
+            <div className="text-sm font-semibold truncate">{user.nome}</div>
+            <div className="text-[11px] text-aw-prata truncate">{user.email}</div>
           </div>
         </div>
+        <button
+          onClick={sair}
+          type="button"
+          className="w-full flex items-center gap-2 px-3 py-2 text-[13px] text-white/60 hover:bg-white/5 hover:text-white transition-colors"
+        >
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+            <polyline points="16 17 21 12 16 7" />
+            <line x1="21" y1="12" x2="9" y2="12" />
+          </svg>
+          Sair
+        </button>
       </div>
     </aside>
   )

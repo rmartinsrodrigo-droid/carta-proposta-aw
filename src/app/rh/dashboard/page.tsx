@@ -1,36 +1,40 @@
+'use client'
+
 import Link from 'next/link'
-import { propostasMock, fmtRelativo, fmtBRL } from '@/lib/mock/propostas'
+import { fmtRelativo, fmtBRL } from '@/lib/mock/propostas'
+import { usePropostas } from '@/lib/mock/propostas-store'
 import { StatusBadge } from '@/components/rh/StatusBadge'
 
 export default function DashboardPage() {
-  const total = propostasMock.length
-  const aceitas = propostasMock.filter((p) => p.status === 'aceita').length
-  const abertas = propostasMock.filter((p) => p.status === 'aberta').length
-  const pendentes = propostasMock.filter((p) => p.status === 'pendente').length
-  const recusadas = propostasMock.filter((p) => p.status === 'recusada').length
-  const expiradas = propostasMock.filter((p) => p.status === 'expirada').length
+  const propostas = usePropostas()
+
+  const total = propostas.length
+  const aceitas = propostas.filter((p) => p.status === 'aceita').length
+  const abertas = propostas.filter((p) => p.status === 'aberta').length
+  const pendentes = propostas.filter((p) => p.status === 'pendente').length
+  const recusadas = propostas.filter((p) => p.status === 'recusada').length
+  const expiradas = propostas.filter((p) => p.status === 'expirada').length
+  const canceladas = propostas.filter((p) => p.status === 'cancelada').length
 
   const decididas = aceitas + recusadas
   const taxaAceite = decididas > 0 ? Math.round((aceitas / decididas) * 100) : 0
 
-  const recentes = [...propostasMock]
+  const recentes = [...propostas]
     .sort((a, b) => new Date(b.atualizada_em).getTime() - new Date(a.atualizada_em).getTime())
     .slice(0, 5)
 
   return (
     <div className="max-w-6xl mx-auto px-8 py-8">
-      {/* Header */}
       <div className="flex items-start justify-between mb-8">
         <div>
           <div className="text-[11px] tracking-[0.18em] uppercase text-aw-tiffany-forte">
             Painel RH
           </div>
-          <h1 className="text-3xl font-bold mt-1 tracking-tight">Bom dia, Ana.</h1>
+          <h1 className="text-3xl font-bold mt-1 tracking-tight">Bom dia.</h1>
           <p className="text-aw-grafite mt-1">
             {pendentes > 0 && (
               <>
-                {pendentes} proposta{pendentes > 1 ? 's' : ''} aguardando serem enviadas ao
-                candidato.{' '}
+                {pendentes} proposta{pendentes > 1 ? 's' : ''} aguardando envio ao candidato.{' '}
               </>
             )}
             {abertas > 0 && (
@@ -38,6 +42,7 @@ export default function DashboardPage() {
                 {abertas} candidato{abertas > 1 ? 's' : ''} com proposta aberta sem decisão.
               </>
             )}
+            {pendentes === 0 && abertas === 0 && 'Sem pendências urgentes agora.'}
           </p>
         </div>
         <Link
@@ -52,15 +57,17 @@ export default function DashboardPage() {
         </Link>
       </div>
 
-      {/* KPIs */}
       <div className="grid grid-cols-4 gap-4 mb-8">
         <KPI label="Total no mês" value={total} sub="propostas emitidas" />
         <KPI label="Aceitas" value={aceitas} sub={`${taxaAceite}% de taxa`} accent />
         <KPI label="Abertas sem decisão" value={abertas} sub="candidato já viu" />
-        <KPI label="Recusadas" value={recusadas + expiradas} sub={`${recusadas} recusa · ${expiradas} expiradas`} />
+        <KPI
+          label="Fora do funil"
+          value={recusadas + expiradas + canceladas}
+          sub={`${recusadas} recusa · ${expiradas} exp · ${canceladas} canc`}
+        />
       </div>
 
-      {/* Recentes */}
       <div className="bg-white border border-aw-prata/30">
         <div className="flex items-center justify-between px-6 py-4 border-b border-aw-prata/30">
           <div>
@@ -103,6 +110,13 @@ export default function DashboardPage() {
                 <td className="px-6 py-3.5 text-sm text-aw-grafite">{fmtRelativo(p.atualizada_em)}</td>
               </tr>
             ))}
+            {recentes.length === 0 && (
+              <tr>
+                <td colSpan={5} className="px-6 py-8 text-center text-aw-grafite text-sm">
+                  Nenhuma proposta ainda. Crie a primeira com o botão "Nova proposta".
+                </td>
+              </tr>
+            )}
           </tbody>
         </table>
       </div>

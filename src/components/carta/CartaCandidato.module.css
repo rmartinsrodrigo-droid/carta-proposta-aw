@@ -429,7 +429,8 @@
   font-size: 11px;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--aw-prata);
+  color: var(--aw-grafite);
+  font-weight: 600;
   flex: 0 0 34%;
   padding-top: 2px;
 }
@@ -532,6 +533,15 @@
   color: rgba(255, 255, 255, 0.7);
   line-height: 1.5;
 }
+.stepData {
+  display: inline-block;
+  font-weight: 800;
+  font-size: 22px;
+  color: var(--aw-tiffany);
+  letter-spacing: -0.015em;
+  margin: 4px 0 8px;
+  line-height: 1;
+}
 
 /* Accept — "Vem pra AW" em Tiffany */
 .accept {
@@ -605,6 +615,21 @@
   text-align: center;
 }
 .foot img { height: 20px; width: auto; margin: 0 auto 14px; opacity: 0.9; }
+.socials {
+  display: flex;
+  justify-content: center;
+  gap: 18px;
+  margin-bottom: 14px;
+}
+.socials a {
+  color: var(--aw-branco);
+  display: inline-flex;
+  padding: 8px;
+  transition: color 0.15s ease, background 0.15s ease;
+}
+.socials a:hover {
+  color: var(--aw-tiffany);
+}
 .foot p { font-size: 12px; line-height: 1.6; margin-bottom: 8px; color: var(--aw-branco); font-weight: 600; letter-spacing: 0.02em; }
 .foot .handle { font-weight: 400; color: var(--aw-prata); letter-spacing: 0.02em; }
 .conf {

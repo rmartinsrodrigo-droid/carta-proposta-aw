@@ -7,6 +7,7 @@ import styles from './CartaCandidato.module.css'
 export type CartaDados = {
   nome: string
   candidato_email?: string | null
+  candidato_telefone?: string | null
   cargo: string
   area?: string | null
   gestor?: string | null
@@ -457,6 +458,9 @@ export function CartaCandidato({
                     <div className={styles.stepNum}>{i + 1}</div>
                     <div>
                       <h3>{h}</h3>
+                      {i === 3 && dados.inicio && (
+                        <div className={styles.stepData}>{dt(dados.inicio)}</div>
+                      )}
                       <p>{p}</p>
                     </div>
                   </div>
@@ -507,6 +511,32 @@ export function CartaCandidato({
                   width={90}
                   height={18}
                 />
+                <div className={styles.socials}>
+                  <a
+                    href="https://instagram.com/athiewohnrath"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="Instagram da Athié Wohnrath"
+                  >
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                      <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
+                      <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+                      <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
+                    </svg>
+                  </a>
+                  <a
+                    href="https://linkedin.com/company/athiewohnrath"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="LinkedIn da Athié Wohnrath"
+                  >
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" />
+                      <rect x="2" y="9" width="4" height="12" />
+                      <circle cx="4" cy="4" r="2" />
+                    </svg>
+                  </a>
+                </div>
                 <p className={styles.handle}>/athiewohnrath</p>
                 <div className={styles.conf}>
                   <LockIcon color="#94A3A9" />

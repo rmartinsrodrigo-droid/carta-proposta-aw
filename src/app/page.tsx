@@ -1,52 +1,30 @@
-import Link from 'next/link'
+import { LoginForm } from './LoginForm'
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-aw-bg flex items-center justify-center px-6">
-      <div className="max-w-2xl w-full">
-        <div className="text-[11px] tracking-[0.18em] uppercase text-aw-tiffany-forte mb-3">
+    <div className="min-h-screen bg-aw-preto text-aw-branco flex items-stretch">
+      {/* Lado esquerdo: identidade */}
+      <div className="hidden md:flex flex-col justify-between w-1/2 p-12 bg-aw-preto">
+        <div className="text-[11px] tracking-[0.18em] uppercase text-aw-tiffany">
           Athié Wohnrath
         </div>
-        <h1 className="text-5xl font-bold tracking-tight mb-4">Carta Proposta</h1>
-        <p className="text-aw-grafite text-lg mb-10 max-w-lg">
-          Ambiente de desenvolvimento. Escolhe por onde entrar.
-        </p>
-
-        <div className="grid grid-cols-2 gap-4">
-          <Link
-            href="/rh/dashboard"
-            className="group block p-6 bg-white border border-aw-prata/30 hover:border-aw-preto transition-colors"
-          >
-            <div className="text-[11px] tracking-[0.18em] uppercase text-aw-tiffany-forte mb-2">
-              Interno
-            </div>
-            <div className="text-xl font-bold mb-1">Painel RH</div>
-            <div className="text-sm text-aw-grafite mb-4">
-              Dashboard, lista de propostas, editor com prévia ao vivo, histórico.
-            </div>
-            <div className="text-sm font-semibold text-aw-preto flex items-center gap-2">
-              Abrir painel
-              <span className="transition-transform group-hover:translate-x-1">→</span>
-            </div>
-          </Link>
-
-          <Link
-            href="/preview"
-            className="group block p-6 bg-aw-preto text-aw-branco hover:bg-aw-grafite transition-colors"
-          >
-            <div className="text-[11px] tracking-[0.18em] uppercase text-aw-tiffany mb-2">
-              Candidato
-            </div>
-            <div className="text-xl font-bold mb-1">Prévia da carta</div>
-            <div className="text-sm text-white/70 mb-4">
-              Como o candidato vê a proposta quando abre o link único.
-            </div>
-            <div className="text-sm font-semibold flex items-center gap-2">
-              Ver prévia
-              <span className="transition-transform group-hover:translate-x-1">→</span>
-            </div>
-          </Link>
+        <div>
+          <div className="w-12 h-[3px] bg-aw-tiffany mb-6" />
+          <h1 className="text-5xl font-bold tracking-tight mb-4 leading-[1.05]">
+            Carta Proposta.
+          </h1>
+          <p className="text-lg text-white/70 max-w-md">
+            A plataforma que transforma uma proposta em experiência de aceite.
+          </p>
         </div>
+        <div className="text-[11px] tracking-[0.14em] uppercase text-white/40">
+          Acesso restrito à equipe autorizada.
+        </div>
+      </div>
+
+      {/* Lado direito: login */}
+      <div className="flex-1 flex items-center justify-center px-6 py-10 bg-aw-bg text-aw-preto">
+        <LoginForm />
       </div>
     </div>
   )

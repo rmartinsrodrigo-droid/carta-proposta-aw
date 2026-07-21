@@ -7,6 +7,7 @@ import { CartaCandidato, type CartaDados } from '@/components/carta/CartaCandida
 const inicial: CartaDados = {
   nome: '',
   candidato_email: '',
+  candidato_telefone: '',
   cargo: '',
   area: '',
   gestor: '',
@@ -96,6 +97,7 @@ export function EditorProposta() {
           <Bloco titulo="Candidato">
             <Input label="Nome completo" value={dados.nome} onChange={(v) => set('nome', v)} placeholder="Ex.: Ana Beatriz Moreira" />
             <Input label="Email" type="email" value={dados.candidato_email ?? ''} onChange={(v) => set('candidato_email', v)} placeholder="ana.moreira@gmail.com" />
+            <Input label="Celular" value={dados.candidato_telefone ?? ''} onChange={(v) => set('candidato_telefone', v)} placeholder="(11) 98765-4321" />
           </Bloco>
 
           <Bloco titulo="Vaga">
