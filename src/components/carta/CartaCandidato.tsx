@@ -400,15 +400,14 @@ export function CartaCandidato({
                   reconhecimento formal de uma cultura que a gente pratica todo dia.
                 </p>
 
-                <div className={`${styles.gptwSelo} ${styles.rv}`} aria-label="Selo Great Place to Work Certificada Junho de 2025 a Junho de 2026 Brasil">
-                  <div className={styles.seloTop}>
-                    Great<br />Place<br />To<br />Work<sup>®</sup>
-                  </div>
-                  <div className={styles.seloBottom}>
-                    <div className={styles.seloMid}>Certificada</div>
-                    <div className={styles.seloData}>Jun/2025 – Jun/2026</div>
-                    <div className={styles.seloPais}>BRASIL</div>
-                  </div>
+                <div className={`${styles.gptwSelo} ${styles.rv}`}>
+                  <Image
+                    src="/gptw-selo.svg"
+                    alt="Great Place To Work · Certificado 2025 · Brasil"
+                    width={160}
+                    height={224}
+                    priority={false}
+                  />
                 </div>
 
                 <div className={`${styles.gptwBlocos} ${styles.rv}`}>
@@ -426,96 +425,6 @@ export function CartaCandidato({
                       cada colaborador encontre aqui espaço de crescimento, segurança e
                       propósito.
                     </p>
-                  </div>
-                </div>
-              </section>
-
-              <section className={styles.premios}>
-                <div className={styles.kicker}>Conquistas 2025</div>
-                <h2 className={styles.rv}>Prêmios e certificações.</h2>
-                <p className={`${styles.premiosIntro} ${styles.rv}`}>
-                  Reconhecimentos que traduzem em números o que a gente entrega.
-                </p>
-
-                <div className={`${styles.premioBig} ${styles.rv}`}>
-                  <div className={styles.premioLabel}>Selo Carbono Neutro 2024</div>
-                  <div className={styles.premioValor}>63.000 kg</div>
-                  <div className={styles.premioSub}>
-                    de CO₂ neutralizados no escritório de São Paulo.
-                  </div>
-                </div>
-
-                <div className={styles.premiosLista}>
-                  <div className={`${styles.premioItem} ${styles.rv}`}>
-                    <div className={styles.premioTitulo}>German Design Awards</div>
-                    <div className={styles.premioDesc}>
-                      Case Localiza Labs · Excellent Architecture
-                    </div>
-                  </div>
-                  <div className={`${styles.premioItem} ${styles.rv}`}>
-                    <div className={styles.premioTitulo}>International Property Awards</div>
-                    <div className={styles.premioDesc}>
-                      Case XP Inc (Mezanino) · Office Interior
-                    </div>
-                  </div>
-                  <div className={`${styles.premioItem} ${styles.rv}`}>
-                    <div className={styles.premioTitulo}>Abilux</div>
-                    <div className={styles.premioDesc}>
-                      Case Experience House · Interiores Corporativos
-                    </div>
-                  </div>
-                </div>
-
-                <div className={`${styles.leedGrid} ${styles.rv}`}>
-                  <div className={styles.leedHeader}>Certificações LEED</div>
-                  <div className={styles.leedRow}>
-                    <div className={styles.leedNum}>1</div>
-                    <div>
-                      <div className={styles.leedTipo}>Platinum</div>
-                      <div className={styles.leedProjetos}>Dow</div>
-                    </div>
-                  </div>
-                  <div className={styles.leedRow}>
-                    <div className={styles.leedNum}>4</div>
-                    <div>
-                      <div className={styles.leedTipo}>Gold</div>
-                      <div className={styles.leedProjetos}>
-                        CEF Vida Alphaville · Google · Eletrobrás SP · Titan Capital
-                      </div>
-                    </div>
-                  </div>
-                  <div className={styles.leedRow}>
-                    <div className={styles.leedNum}>5</div>
-                    <div>
-                      <div className={styles.leedTipo}>Silver</div>
-                      <div className={styles.leedProjetos}>
-                        Indorama · CBRE RJ · Bradesco Paulista · Bradesco Itapeva · AstraZeneca
-                      </div>
-                    </div>
-                  </div>
-                  <div className={styles.leedRow}>
-                    <div className={styles.leedNum}>2</div>
-                    <div>
-                      <div className={styles.leedTipo}>Certified</div>
-                      <div className={styles.leedProjetos}>Ipiranga SP · Ipiranga RJ</div>
-                    </div>
-                  </div>
-                </div>
-
-                <div className={`${styles.outrosCerts} ${styles.rv}`}>
-                  <div className={styles.certItem}>
-                    <div className={styles.certSigla}>WELL</div>
-                    <div className={styles.certDesc}>
-                      Platinum: Dow · Gold: JP Morgan Client Center
-                    </div>
-                  </div>
-                  <div className={styles.certItem}>
-                    <div className={styles.certSigla}>Fitwel</div>
-                    <div className={styles.certDesc}>2 Stars: CBRE Sede Rio de Janeiro</div>
-                  </div>
-                  <div className={styles.certItem}>
-                    <div className={styles.certSigla}>EDGE</div>
-                    <div className={styles.certDesc}>Edifício Sereno</div>
                   </div>
                 </div>
               </section>
