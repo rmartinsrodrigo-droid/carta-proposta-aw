@@ -43,3 +43,6 @@ next-env.d.ts
 
 # tooling local
 .claude/
+
+# clone acidental do github desktop
+carta-proposta/
