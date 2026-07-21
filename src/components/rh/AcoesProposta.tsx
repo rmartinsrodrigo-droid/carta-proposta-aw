@@ -30,6 +30,11 @@ export function AcoesProposta({
     return () => document.removeEventListener('mousedown', onClick)
   }, [aberto])
 
+  const editar = () => {
+    router.push(`/rh/propostas/${proposta.id}/editar`)
+    setAberto(false)
+  }
+
   const renovar = () => {
     const atual = proposta.validade_em.split('T')[0]
     const nova = window.prompt(
@@ -76,6 +81,9 @@ export function AcoesProposta({
           Ações
         </div>
         <div className="space-y-2">
+          <button onClick={editar} className="w-full text-left text-sm py-2 px-3 hover:bg-aw-bg transition-colors">
+            Editar proposta
+          </button>
           <button onClick={renovar} className="w-full text-left text-sm py-2 px-3 hover:bg-aw-bg transition-colors">
             Renovar validade
           </button>
@@ -113,6 +121,9 @@ export function AcoesProposta({
       </button>
       {aberto && (
         <div className="absolute right-0 top-full mt-1 bg-white border border-aw-prata/40 shadow-lg z-30 w-52">
+          <button onClick={editar} className="block w-full text-left text-sm py-2 px-4 hover:bg-aw-bg">
+            Editar
+          </button>
           <button onClick={renovar} className="block w-full text-left text-sm py-2 px-4 hover:bg-aw-bg">
             Renovar validade
           </button>

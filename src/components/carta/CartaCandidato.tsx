@@ -287,8 +287,9 @@ export function CartaCandidato({
                   <Image
                     src="/logos/logo-branco.png"
                     alt="athiē | wohnrath"
-                    width={100}
-                    height={22}
+                    width={220}
+                    height={38}
+                    quality={95}
                     priority
                   />
                   <span className={styles.lock}>
@@ -434,8 +435,9 @@ export function CartaCandidato({
                   <Image
                     src="/logos/logo-preto.png"
                     alt="athiē | wohnrath"
-                    width={140}
-                    height={30}
+                    width={280}
+                    height={48}
+                    quality={95}
                   />
                 </div>
                 <div className={styles.offerHead}>
@@ -553,8 +555,9 @@ export function CartaCandidato({
                 <Image
                   src="/logos/logo-branco.png"
                   alt="athiē | wohnrath"
-                  width={90}
-                  height={18}
+                  width={240}
+                  height={41}
+                  quality={95}
                 />
                 <div className={styles.socials}>
                   <a

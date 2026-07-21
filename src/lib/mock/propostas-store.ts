@@ -104,6 +104,20 @@ export function acoesPropostas() {
       setState([nova, ...atual()])
       return nova
     },
+    atualizar(id: string, patch: Partial<PropostaMock>) {
+      setState(
+        atual().map((p) =>
+          p.id === id
+            ? {
+                ...p,
+                ...patch,
+                id: p.id,
+                atualizada_em: new Date().toISOString(),
+              }
+            : p
+        )
+      )
+    },
     cancelar(id: string) {
       setState(
         atual().map((p) =>

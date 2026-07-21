@@ -372,11 +372,11 @@
   font-size: 15px;
   line-height: 1.6;
   color: var(--aw-grafite);
-  margin-bottom: 28px;
+  margin-bottom: 44px;
 }
 .gptwSelo {
   width: 160px;
-  margin: 0 auto 34px;
+  margin: 12px auto 44px;
   display: block;
 }
 .gptwSelo img {

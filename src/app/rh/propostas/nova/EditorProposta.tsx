@@ -2,7 +2,9 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import { CartaCandidato, type CartaDados } from '@/components/carta/CartaCandidato'
+import { acoesPropostas } from '@/lib/mock/propostas-store'
 
 const inicial: CartaDados = {
   nome: '',
@@ -30,8 +32,16 @@ const inicial: CartaDados = {
   remetente: 'Time de Gente & Gestão · a|w',
 }
 
-export function EditorProposta() {
-  const [dados, setDados] = useState<CartaDados>(inicial)
+export function EditorProposta({
+  initial,
+  propostaId,
+}: {
+  initial?: CartaDados
+  propostaId?: string
+} = {}) {
+  const router = useRouter()
+  const modo: 'nova' | 'editar' = propostaId ? 'editar' : 'nova'
+  const [dados, setDados] = useState<CartaDados>(initial ?? inicial)
   const [salvo, setSalvo] = useState<null | 'rascunho' | 'link'>(null)
 
   const set = <K extends keyof CartaDados>(k: K, v: CartaDados[K]) =>
@@ -55,22 +65,46 @@ export function EditorProposta() {
             <div className="flex items-center gap-2 text-sm text-aw-grafite">
               <Link href="/rh/propostas" className="hover:text-aw-preto">Propostas</Link>
               <span>›</span>
-              <span className="text-aw-preto font-medium">Nova proposta</span>
+              <span className="text-aw-preto font-medium">
+                {modo === 'editar' ? `Editar · ${dados.nome || 'proposta'}` : 'Nova proposta'}
+              </span>
             </div>
             <span className="inline-flex items-center px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider bg-neutral-200 text-neutral-700">
-              Rascunho
+              {modo === 'editar' ? 'Editando' : 'Rascunho'}
             </span>
           </div>
           <div className="flex gap-2">
             <button
               className="flex-1 inline-flex items-center justify-center gap-2 bg-white border border-aw-preto text-aw-preto px-4 py-2.5 text-sm font-semibold hover:bg-aw-preto hover:text-aw-branco transition-colors"
               onClick={() => {
+                if (propostaId) {
+                  acoesPropostas().atualizar(propostaId, {
+                    candidato_nome: dados.nome,
+                    candidato_email: dados.candidato_email ?? '',
+                    cargo: dados.cargo,
+                    area: dados.area ?? '',
+                    gestor: dados.gestor ?? '',
+                    gestor_email: dados.gestor_email ?? '',
+                    gestor_telefone: dados.gestor_telefone ?? '',
+                    modelo: dados.modelo,
+                    salario_centavos: Math.round((dados.salario || 0) * 100),
+                    jornada: dados.jornada ?? '',
+                    local: dados.local ?? '',
+                    inicio: dados.inicio ?? '',
+                    validade_em: dados.validade,
+                    beneficios: dados.beneficios,
+                    remetente: dados.remetente,
+                  })
+                }
                 setSalvo('rascunho')
-                setTimeout(() => setSalvo(null), 2500)
+                setTimeout(() => {
+                  setSalvo(null)
+                  if (propostaId) router.push(`/rh/propostas/${propostaId}`)
+                }, 1400)
               }}
               type="button"
             >
-              Salvar rascunho
+              {modo === 'editar' ? 'Salvar alterações' : 'Salvar rascunho'}
             </button>
             <button
               className="flex-1 inline-flex items-center justify-center gap-2 bg-aw-preto text-aw-branco px-4 py-2.5 text-sm font-semibold hover:bg-aw-grafite transition-colors"
@@ -86,7 +120,9 @@ export function EditorProposta() {
           {salvo && (
             <div className="mt-3 text-[12px] text-aw-tiffany-forte font-semibold">
               {salvo === 'rascunho'
-                ? 'Rascunho salvo. (mock — sem backend ainda)'
+                ? modo === 'editar'
+                  ? 'Alterações salvas. Voltando pro detalhe…'
+                  : 'Rascunho salvo. (mock — sem backend ainda)'
                 : 'Link gerado. (mock — no fluxo real, aparece o botão Copiar aqui)'}
             </div>
           )}
