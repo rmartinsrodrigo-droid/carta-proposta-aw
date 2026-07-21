@@ -351,6 +351,233 @@
   margin: 0;
 }
 
+/* GPTW (Tiffany) */
+.gptw {
+  background: var(--aw-tiffany);
+  color: var(--aw-preto);
+}
+.gptw .kicker {
+  color: rgba(0, 0, 0, 0.6);
+  margin-bottom: 12px;
+}
+.gptw h2 {
+  font-weight: 800;
+  font-size: 26px;
+  line-height: 1.1;
+  margin-bottom: 14px;
+  letter-spacing: -0.015em;
+  color: var(--aw-preto);
+}
+.gptwIntro {
+  font-size: 15px;
+  line-height: 1.55;
+  color: rgba(0, 0, 0, 0.72);
+  margin-bottom: 26px;
+}
+.gptwSelo {
+  width: 148px;
+  color: var(--aw-branco);
+  margin: 0 auto 32px;
+  font-family: var(--aw-font);
+  box-shadow: 0 12px 32px -10px rgba(0, 0, 0, 0.3);
+}
+.seloTop {
+  background: #E62E2A;
+  padding: 20px 14px 16px;
+  font-weight: 900;
+  font-size: 22px;
+  line-height: 0.95;
+  text-align: left;
+}
+.seloTop sup {
+  font-size: 9px;
+  vertical-align: super;
+}
+.seloBottom {
+  background: #1E4C9A;
+  padding: 10px 14px 14px;
+  text-align: left;
+}
+.seloMid {
+  font-weight: 700;
+  font-size: 15px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.35);
+  padding-bottom: 5px;
+  margin-bottom: 5px;
+}
+.seloData {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+.seloPais {
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  margin-top: 6px;
+}
+.gptwBlocos {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.gptwBloco {
+  background: rgba(0, 0, 0, 0.06);
+  padding: 18px;
+}
+.gptwBloco h3 {
+  font-weight: 800;
+  font-size: 14px;
+  margin-bottom: 6px;
+  color: var(--aw-preto);
+  letter-spacing: -0.005em;
+}
+.gptwBloco p {
+  font-size: 13.5px;
+  line-height: 1.55;
+  color: rgba(0, 0, 0, 0.75);
+}
+
+/* Prêmios (preto) */
+.premios {
+  background: var(--aw-preto);
+  color: var(--aw-branco);
+}
+.premios .kicker {
+  color: var(--aw-tiffany);
+  margin-bottom: 12px;
+}
+.premios h2 {
+  font-weight: 800;
+  font-size: 26px;
+  line-height: 1.1;
+  margin-bottom: 12px;
+  color: var(--aw-branco);
+  letter-spacing: -0.015em;
+}
+.premiosIntro {
+  font-size: 14.5px;
+  color: rgba(255, 255, 255, 0.72);
+  margin-bottom: 26px;
+}
+.premioBig {
+  background: var(--aw-tiffany);
+  color: var(--aw-preto);
+  padding: 22px;
+  margin-bottom: 26px;
+}
+.premioLabel {
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: rgba(0, 0, 0, 0.65);
+  margin-bottom: 10px;
+}
+.premioValor {
+  font-weight: 800;
+  font-size: 40px;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  color: var(--aw-preto);
+}
+.premioSub {
+  font-size: 12.5px;
+  margin-top: 10px;
+  color: rgba(0, 0, 0, 0.68);
+  line-height: 1.4;
+}
+.premiosLista {
+  display: flex;
+  flex-direction: column;
+  border-top: 1px solid rgba(255, 255, 255, 0.14);
+  margin-bottom: 30px;
+}
+.premioItem {
+  padding: 16px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.14);
+}
+.premioTitulo {
+  font-weight: 700;
+  font-size: 14px;
+  color: var(--aw-branco);
+  margin-bottom: 3px;
+}
+.premioDesc {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.68);
+  line-height: 1.4;
+}
+.leedGrid {
+  border-top: 2px solid var(--aw-tiffany);
+  padding-top: 20px;
+  margin-bottom: 28px;
+}
+.leedHeader {
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--aw-tiffany);
+  font-weight: 700;
+  margin-bottom: 14px;
+}
+.leedRow {
+  display: grid;
+  grid-template-columns: 48px 1fr;
+  gap: 14px;
+  align-items: baseline;
+  padding: 12px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.10);
+}
+.leedRow:last-child { border-bottom: 0; }
+.leedNum {
+  font-size: 28px;
+  font-weight: 800;
+  color: var(--aw-tiffany);
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+.leedTipo {
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--aw-branco);
+  margin-bottom: 4px;
+}
+.leedProjetos {
+  font-size: 12.5px;
+  color: rgba(255, 255, 255, 0.65);
+  line-height: 1.4;
+}
+.outrosCerts {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.certItem {
+  display: grid;
+  grid-template-columns: 80px 1fr;
+  gap: 14px;
+  align-items: center;
+  padding: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+}
+.certSigla {
+  font-weight: 800;
+  font-size: 15px;
+  color: var(--aw-tiffany);
+  letter-spacing: 0.05em;
+}
+.certDesc {
+  font-size: 12.5px;
+  color: rgba(255, 255, 255, 0.8);
+  line-height: 1.4;
+}
+
+/* Logo somente no PDF impresso */
+.printLogo { display: none; }
+
 /* Offer (branco — "nosso acordo") */
 .offer {
   background: var(--aw-branco);
@@ -668,8 +895,16 @@
   }
   .scroll { overflow: visible !important; height: auto !important; }
   .progress { display: none !important; }
-  .hero, .welcome, .ceo, .about, .valores, .steps, .accept, .foot {
+  .hero, .welcome, .ceo, .about, .valores, .gptw, .premios, .steps, .accept, .foot {
     display: none !important;
+  }
+  .printLogo {
+    display: block !important;
+    margin-bottom: 24px;
+  }
+  .printLogo img {
+    height: 26px !important;
+    width: auto !important;
   }
   .offer {
     padding: 24px 32px !important;
