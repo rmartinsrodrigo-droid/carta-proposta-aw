@@ -77,14 +77,6 @@ export function DetalhePropostaClient({ id }: { id: string }) {
           </p>
         </div>
         <div className="flex gap-2">
-          {(p.status === 'rascunho' || p.status === 'pendente') && (
-            <button
-              type="button"
-              className="inline-flex items-center gap-2 bg-white border border-aw-preto text-aw-preto px-4 py-2.5 text-sm font-semibold hover:bg-aw-preto hover:text-aw-branco transition-colors"
-            >
-              Editar
-            </button>
-          )}
           <Link
             href={linkPathRelativo}
             target="_blank"
