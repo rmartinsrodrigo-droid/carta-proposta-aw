@@ -30,6 +30,10 @@ const inicial: CartaDados = {
     'Seguro de vida',
   ],
   remetente: 'Time de Gente & Gestão · a|w',
+  tutor_nome: '',
+  tutor_funcao: '',
+  tutor_whatsapp: '',
+  tutor_foto: '',
 }
 
 export function EditorProposta({
@@ -94,6 +98,10 @@ export function EditorProposta({
                     validade_em: dados.validade,
                     beneficios: dados.beneficios,
                     remetente: dados.remetente,
+                    tutor_nome: dados.tutor_nome ?? '',
+                    tutor_funcao: dados.tutor_funcao ?? '',
+                    tutor_whatsapp: dados.tutor_whatsapp ?? '',
+                    tutor_foto: dados.tutor_foto ?? '',
                   })
                 }
                 setSalvo('rascunho')
@@ -165,6 +173,64 @@ export function EditorProposta({
             <Input label="Nome" value={dados.gestor ?? ''} onChange={(v) => set('gestor', v)} placeholder="Ex.: Ricardo Prado" />
             <Input label="Email" type="email" value={dados.gestor_email ?? ''} onChange={(v) => set('gestor_email', v)} placeholder="ricardo.prado@awnet.com.br" />
             <Input label="Celular (com DDD)" value={dados.gestor_telefone ?? ''} onChange={(v) => set('gestor_telefone', v)} placeholder="(11) 98765-4321" />
+          </Bloco>
+
+          <Bloco titulo="Tutor">
+            <div className="text-[12px] text-aw-grafite -mt-2 mb-3">
+              Quem recebe o candidato no primeiro dia e caminha com ele nas primeiras semanas.
+            </div>
+            <Input label="Nome" value={dados.tutor_nome ?? ''} onChange={(v) => set('tutor_nome', v)} placeholder="Ex.: Bruna Tanaka" />
+            <Input label="Função" value={dados.tutor_funcao ?? ''} onChange={(v) => set('tutor_funcao', v)} placeholder="Ex.: Arquiteta Sênior · Projetos Corporativos" />
+            <Input label="WhatsApp (com DDD)" value={dados.tutor_whatsapp ?? ''} onChange={(v) => set('tutor_whatsapp', v)} placeholder="(11) 98765-4321" />
+            <label className="block">
+              <span className="block text-[11px] tracking-[0.14em] uppercase font-semibold text-aw-grafite mb-1.5">
+                Foto do tutor (aparece em preto e branco)
+              </span>
+              <div className="flex items-center gap-3">
+                {dados.tutor_foto ? (
+                  <img
+                    src={dados.tutor_foto}
+                    alt="Foto do tutor"
+                    className="w-16 h-16 object-cover"
+                    style={{ filter: 'grayscale(100%) contrast(1.05)' }}
+                  />
+                ) : (
+                  <div className="w-16 h-16 bg-aw-tiffany-claro text-aw-tiffany-forte flex items-center justify-center">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                      <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                      <circle cx="12" cy="7" r="4" />
+                    </svg>
+                  </div>
+                )}
+                <div className="flex-1 space-y-2">
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={(e) => {
+                      const file = e.target.files?.[0]
+                      if (!file) return
+                      if (file.size > 2 * 1024 * 1024) {
+                        alert('Foto muito grande. Use uma imagem até 2 MB.')
+                        return
+                      }
+                      const reader = new FileReader()
+                      reader.onload = () => set('tutor_foto', String(reader.result))
+                      reader.readAsDataURL(file)
+                    }}
+                    className="block w-full text-[12px] text-aw-grafite file:mr-3 file:py-1.5 file:px-3 file:border file:border-aw-preto file:bg-white file:text-aw-preto file:text-[11px] file:font-semibold file:cursor-pointer hover:file:bg-aw-preto hover:file:text-aw-branco"
+                  />
+                  {dados.tutor_foto && (
+                    <button
+                      type="button"
+                      onClick={() => set('tutor_foto', '')}
+                      className="text-[11px] text-red-700 hover:underline"
+                    >
+                      Remover foto
+                    </button>
+                  )}
+                </div>
+              </div>
+            </label>
           </Bloco>
 
           <Bloco titulo="Benefícios">

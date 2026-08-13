@@ -19,6 +19,10 @@ export type PropostaMock = {
   validade_em: string
   beneficios: string[]
   remetente: string
+  tutor_nome?: string
+  tutor_funcao?: string
+  tutor_whatsapp?: string
+  tutor_foto?: string
   criada_em: string
   criada_por: string
   atualizada_em: string
@@ -57,6 +61,9 @@ export const propostasMock: PropostaMock[] = [
     validade_em: '2026-08-01',
     beneficios: benBase,
     remetente: 'Time de Gente & Gestão · a|w',
+    tutor_nome: 'Bruna Tanaka',
+    tutor_funcao: 'Arquiteta Sênior · time de Projetos Corporativos',
+    tutor_whatsapp: '(11) 99621-4488',
     criada_em: '2026-07-19T10:23:00-03:00',
     criada_por: 'ana.silva@awnet.com.br',
     atualizada_em: '2026-07-19T14:12:00-03:00',

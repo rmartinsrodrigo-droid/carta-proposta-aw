@@ -40,6 +40,10 @@ export function EditarPropostaClient({ id }: { id: string }) {
     validade: p.validade_em,
     beneficios: p.beneficios,
     remetente: p.remetente,
+    tutor_nome: p.tutor_nome ?? null,
+    tutor_funcao: p.tutor_funcao ?? null,
+    tutor_whatsapp: p.tutor_whatsapp ?? null,
+    tutor_foto: p.tutor_foto ?? null,
   }
 
   return <EditorProposta initial={initial} propostaId={p.id} />

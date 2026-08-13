@@ -21,6 +21,10 @@ export type CartaDados = {
   validade: string
   beneficios: string[]
   remetente: string
+  tutor_nome?: string | null
+  tutor_funcao?: string | null
+  tutor_whatsapp?: string | null
+  tutor_foto?: string | null
 }
 
 const numerosAW: ReadonlyArray<[string, string]> = [
@@ -50,6 +54,19 @@ const passos: ReadonlyArray<[string, string]> = [
   ['Documentação', 'O RH envia a lista de documentos e conduz a admissão com você.'],
   ['Preparação', 'Deixamos acesso, equipamento e seu primeiro dia prontos antes de você chegar.'],
   ['Primeiro dia', 'Você começa sabendo pra onde ir, com quem falar e o que esperar.'],
+]
+
+const agenda: ReadonlyArray<[string, string]> = [
+  ['9h', 'Recepção dos novos colaboradores e entrega de equipamentos.'],
+  ['10h', 'História, estrutura e valores da a|w.'],
+  ['11h', 'Departamento Pessoal: benefícios e contratos · Instituto a|w.'],
+  ['12h', 'Almoço com seu tutor.'],
+  ['13h', 'QSMS.'],
+  ['14h', 'Galpão e logística · foto dos novos colaboradores.'],
+  ['15h', 'Universidade a|w.'],
+  ['16h', 'PRO26, descrição de cargo, carreira, Diário de Bordo.'],
+  ['17h', 'Tour pela a|w.'],
+  ['18h', 'Fim do primeiro dia.'],
 ]
 
 const cartaCeo: ReadonlyArray<string> = [
@@ -204,7 +221,9 @@ export function CartaCandidato({
 }) {
   const scrollRef = useRef<HTMLDivElement>(null)
   const progressRef = useRef<HTMLDivElement>(null)
+  const agendaRef = useRef<HTMLElement>(null)
   const [msg, setMsg] = useState<string>('')
+  const [aceitou, setAceitou] = useState<boolean>(false)
 
   useEffect(() => {
     const scroller = scrollRef.current
@@ -375,6 +394,19 @@ export function CartaCandidato({
                 </div>
               </section>
 
+              <section className={styles.valores}>
+                <div className={styles.kicker}>Nossos valores</div>
+                <h2 className={styles.rv}>O que nos move todo dia.</h2>
+                <div className={styles.valoresLista}>
+                  {valoresAW.map(([h, p]) => (
+                    <div key={h} className={`${styles.valorItem} ${styles.rv}`}>
+                      <h3 className={styles.valorTitulo}>{h}</h3>
+                      <p className={styles.valorDesc}>{p}</p>
+                    </div>
+                  ))}
+                </div>
+              </section>
+
               <section className={`${styles.about} ${styles.rv}`}>
                 <div className={styles.kicker}>Quem é a a|w</div>
                 <h2>Arquitetura e engenharia que constroem onde outras empresas crescem.</h2>
@@ -482,19 +514,52 @@ export function CartaCandidato({
                     ))}
                   </ul>
                 </div>
-              </section>
 
-              <section className={styles.valores}>
-                <div className={styles.kicker}>Nossos valores</div>
-                <h2 className={styles.rv}>O que nos move todo dia.</h2>
-                <div className={styles.valoresLista}>
-                  {valoresAW.map(([h, p]) => (
-                    <div key={h} className={`${styles.valorItem} ${styles.rv}`}>
-                      <h3 className={styles.valorTitulo}>{h}</h3>
-                      <p className={styles.valorDesc}>{p}</p>
+                {(dados.tutor_nome || dados.tutor_funcao || dados.tutor_whatsapp) && (
+                  <div className={`${styles.tutor} ${styles.rv}`}>
+                    <div className={styles.tutorL}>Seu tutor</div>
+                    <div className={styles.tutorCard}>
+                      {dados.tutor_foto ? (
+                        <img
+                          src={dados.tutor_foto}
+                          alt={dados.tutor_nome ?? 'Tutor'}
+                          className={styles.tutorFoto}
+                        />
+                      ) : (
+                        <div className={`${styles.tutorFoto} ${styles.tutorFotoVazia}`} aria-hidden>
+                          <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                            <circle cx="12" cy="7" r="4" />
+                          </svg>
+                        </div>
+                      )}
+                      <div className={styles.tutorInfo}>
+                        {dados.tutor_nome && (
+                          <div className={styles.tutorNome}>{dados.tutor_nome}</div>
+                        )}
+                        {dados.tutor_funcao && (
+                          <div className={styles.tutorFuncao}>{dados.tutor_funcao}</div>
+                        )}
+                        {dados.tutor_whatsapp && (
+                          <a
+                            className={styles.tutorWa}
+                            href={whatsappHref(dados.tutor_whatsapp)}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
+                              <path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38a9.9 9.9 0 0 0 4.79 1.22h.01c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.83 9.83 0 0 0 12.04 2zm5.02 14.06c-.21.59-1.24 1.13-1.71 1.2-.44.07-1 .09-1.62-.1a13.9 13.9 0 0 1-1.47-.54c-2.59-1.12-4.28-3.72-4.41-3.9-.13-.18-1.06-1.41-1.06-2.69 0-1.28.67-1.91.91-2.17.24-.26.53-.33.71-.33.18 0 .35.01.51.02.16.01.38-.06.6.46.21.51.72 1.79.78 1.92.06.13.1.28.02.46-.08.18-.13.29-.25.44-.13.15-.27.34-.38.46-.13.13-.26.28-.11.54.15.26.68 1.11 1.46 1.8 1 .89 1.85 1.17 2.11 1.3.26.13.42.11.57-.07.16-.18.66-.77.83-1.03.17-.26.35-.22.58-.13.24.09 1.5.71 1.76.83.26.13.44.19.5.29.06.11.06.62-.14 1.21z" />
+                            </svg>
+                            {dados.tutor_whatsapp}
+                          </a>
+                        )}
+                      </div>
                     </div>
-                  ))}
-                </div>
+                    <div className={styles.tutorNota}>
+                      Ele te recebe no primeiro dia e caminha com você nas primeiras semanas.
+                    </div>
+                  </div>
+                )}
               </section>
 
               <section className={styles.steps}>
@@ -530,26 +595,90 @@ export function CartaCandidato({
                     //   3. Envia email pro candidato (dados.candidato_email) com o PDF anexo,
                     //      copiando recursoshumanos.aw@awnet.com.br.
                     //      Assunto: `Proposta do candidato ${dados.nome} - Aceita! Vamos iniciar a jornada.`
+                    setAceitou(true)
                     setMsg(
-                      'Recebemos seu aceite. Em minutos você recebe o PDF por email e o RH entra em contato pra dar sequência.'
+                      'Recebemos seu aceite. Role pra ver a agenda do seu primeiro dia — ou baixe em PDF.'
                     )
+                    setTimeout(() => {
+                      if (agendaRef.current && scrollRef.current) {
+                        const sRect = scrollRef.current.getBoundingClientRect()
+                        const tRect = agendaRef.current.getBoundingClientRect()
+                        scrollRef.current.scrollTo({
+                          top: scrollRef.current.scrollTop + tRect.top - sRect.top - 10,
+                          behavior: 'smooth',
+                        })
+                      }
+                    }, 300)
                   }}
                   type="button"
                 >
                   Aceitar proposta
                 </button>
-                <button
+                <a
                   className={`${styles.btn} ${styles.btnSec}`}
-                  onClick={() => {
-                    const assunto = encodeURIComponent(`Dúvida sobre proposta - ${dados.nome}`)
-                    window.location.href = `mailto:recursoshumanos.aw@awnet.com.br?subject=${assunto}`
-                  }}
-                  type="button"
+                  href={`https://wa.me/5511945802181?text=${encodeURIComponent(
+                    `Olá! Sou ${dados.nome} e tenho uma dúvida sobre a proposta.`
+                  )}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
                 >
                   Tenho uma dúvida antes
-                </button>
+                </a>
                 <div className={styles.msg}>{msg}</div>
               </section>
+
+              {aceitou && (
+                <section className={styles.agenda} ref={agendaRef}>
+                  <div className={styles.kicker}>Seu primeiro dia</div>
+                  <h2>Agenda do 1º dia.</h2>
+                  <p className={styles.agendaIntro}>
+                    A gente te recebe com hora marcada. Chega, respira, se apresenta. O resto vem
+                    junto com o time.
+                  </p>
+                  <ol className={styles.agendaLista}>
+                    {agenda.map(([hora, desc]) => {
+                      const almoco = hora === '12h'
+                      return (
+                        <li key={hora} className={styles.agendaItem}>
+                          <div className={styles.agendaHora}>{hora}</div>
+                          <div className={styles.agendaDesc}>
+                            {desc}
+                            {almoco && dados.tutor_nome && (
+                              <div className={styles.agendaTutor}>
+                                Com {dados.tutor_nome}
+                                {dados.tutor_whatsapp && (
+                                  <>
+                                    {' · '}
+                                    <a
+                                      href={whatsappHref(dados.tutor_whatsapp)}
+                                      target="_blank"
+                                      rel="noopener noreferrer"
+                                    >
+                                      {dados.tutor_whatsapp}
+                                    </a>
+                                  </>
+                                )}
+                              </div>
+                            )}
+                          </div>
+                        </li>
+                      )
+                    })}
+                  </ol>
+                  <button
+                    className={styles.agendaBtn}
+                    onClick={() => {
+                      document.body.classList.add('print-agenda')
+                      window.print()
+                      setTimeout(() => document.body.classList.remove('print-agenda'), 500)
+                    }}
+                    type="button"
+                  >
+                    <PrinterIcon />
+                    Baixar agenda em PDF
+                  </button>
+                </section>
+              )}
 
               <footer className={styles.foot}>
                 <Image
