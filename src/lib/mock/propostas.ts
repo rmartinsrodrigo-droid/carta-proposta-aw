@@ -19,9 +19,9 @@ export type PropostaMock = {
   validade_em: string
   beneficios: string[]
   remetente: string
-  tutor_nome?: string
-  tutor_funcao?: string
-  tutor_whatsapp?: string
+  tutor_nome: string
+  tutor_funcao: string
+  tutor_whatsapp: string
   tutor_foto?: string
   criada_em: string
   criada_por: string

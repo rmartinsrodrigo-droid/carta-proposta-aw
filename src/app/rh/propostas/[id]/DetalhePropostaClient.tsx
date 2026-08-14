@@ -147,6 +147,9 @@ export function DetalhePropostaClient({ id }: { id: string }) {
               <Row label="Gestor" value={p.gestor} />
               <Row label="Email do gestor" value={p.gestor_email} />
               <Row label="Celular do gestor" value={p.gestor_telefone} />
+              <Row label="Tutor" value={p.tutor_nome} />
+              <Row label="Função do tutor" value={p.tutor_funcao} />
+              <Row label="WhatsApp do tutor" value={p.tutor_whatsapp} />
               <Row label="Salário mensal" value={fmtBRL(p.salario_centavos)} bold />
               <Row label="Jornada" value={p.jornada} />
               <Row label="Local / modelo" value={p.local} />
