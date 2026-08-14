@@ -33,8 +33,14 @@ function writeLS(propostas: PropostaMock[]) {
 function ensureState(): PropostaMock[] {
   if (state !== null) return state
   const persisted = readLS()
-  state = persisted ?? [...propostasMock]
-  if (persisted === null) writeLS(state)
+  // Se o usuário nunca populou OU zerou tudo, repopula com o mock.
+  // Protótipo — nunca deixa em zero, o painel precisa ter dados pra demonstração.
+  if (persisted && persisted.length > 0) {
+    state = persisted
+  } else {
+    state = [...propostasMock]
+    writeLS(state)
+  }
   return state
 }
 

@@ -3,7 +3,7 @@
 import Link from 'next/link'
 import { useState } from 'react'
 import { fmtBRL, fmtRelativo } from '@/lib/mock/propostas'
-import { usePropostas } from '@/lib/mock/propostas-store'
+import { usePropostas, acoesPropostas } from '@/lib/mock/propostas-store'
 import { StatusBadge } from '@/components/rh/StatusBadge'
 import { AcoesProposta } from '@/components/rh/AcoesProposta'
 import type { PropostaStatus } from '@/types/proposta'
@@ -47,6 +47,16 @@ export default function PropostasPage() {
             {lista.length} de {propostas.length} propostas
           </p>
         </div>
+        <div className="flex gap-2">
+          {propostas.length === 0 && (
+            <button
+              type="button"
+              onClick={() => acoesPropostas().reset()}
+              className="inline-flex items-center gap-2 bg-white border border-aw-preto text-aw-preto px-4 py-3 text-sm font-semibold hover:bg-aw-preto hover:text-aw-branco transition-colors"
+            >
+              Restaurar exemplos
+            </button>
+          )}
         <Link
           href="/rh/propostas/nova"
           className="inline-flex items-center gap-2 bg-aw-preto text-aw-branco px-5 py-3 text-sm font-semibold hover:bg-aw-grafite transition-colors"
@@ -57,6 +67,7 @@ export default function PropostasPage() {
           </svg>
           Nova proposta
         </Link>
+        </div>
       </div>
 
       <div className="flex flex-wrap items-center gap-2 mb-6">
