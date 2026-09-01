@@ -35,6 +35,41 @@ export function AcoesProposta({
     setAberto(false)
   }
 
+  const enviarEmail = () => {
+    if (!proposta.candidato_email) {
+      alert('O candidato não tem email cadastrado. Edita a proposta e adiciona antes.')
+      return
+    }
+    const dataAceite = new Date().toLocaleDateString('pt-BR')
+    const assunto = `Aceite de proposta — ${proposta.candidato_nome}`
+    const corpo = [
+      `Olá,`,
+      ``,
+      `Segue registro do aceite de proposta do candidato ${proposta.candidato_nome}.`,
+      ``,
+      `Dados da proposta:`,
+      `• Candidato: ${proposta.candidato_nome} (${proposta.candidato_email})`,
+      `• Cargo: ${proposta.cargo} · ${proposta.area}`,
+      `• Modelo: ${proposta.modelo}`,
+      `• Salário mensal: R$ ${(proposta.salario_centavos / 100).toLocaleString('pt-BR', { minimumFractionDigits: 0 })}`,
+      `• Início previsto: ${new Date(proposta.inicio).toLocaleDateString('pt-BR')}`,
+      `• Data do aceite: ${dataAceite}`,
+      ``,
+      `O PDF do aceite segue em anexo (ver anexo do email).`,
+      ``,
+      `Atenciosamente,`,
+      `Time de Gente & Gestão · Athié Wohnrath`,
+    ].join('\r\n')
+    const cc = 'recursoshumanos.aw@awnet.com.br'
+    const href = `mailto:${encodeURIComponent(proposta.candidato_email)}?cc=${encodeURIComponent(cc)}&subject=${encodeURIComponent(assunto)}&body=${encodeURIComponent(corpo)}`
+    // Atualiza o status ANTES de navegar pro mailto — se setar location.href primeiro,
+    // o browser pode abortar o resto do script e o status não persiste no localStorage.
+    acoes.atualizar(proposta.id, { status: 'email_gerado' })
+    setAberto(false)
+    // Nova aba pra não perder o painel — mailto abre o cliente de email do usuário.
+    window.open(href, '_blank')
+  }
+
   const renovar = () => {
     const atual = proposta.validade_em.split('T')[0]
     const nova = window.prompt(
@@ -81,6 +116,9 @@ export function AcoesProposta({
           Ações
         </div>
         <div className="space-y-2">
+          <button onClick={enviarEmail} className="w-full text-left text-sm py-2 px-3 hover:bg-aw-bg transition-colors font-semibold text-aw-tiffany-forte">
+            Enviar e-mail de aceite
+          </button>
           <button onClick={editar} className="w-full text-left text-sm py-2 px-3 hover:bg-aw-bg transition-colors">
             Editar proposta
           </button>
@@ -121,6 +159,9 @@ export function AcoesProposta({
       </button>
       {aberto && (
         <div className="absolute right-0 top-full mt-1 bg-white border border-aw-prata/40 shadow-lg z-30 w-52">
+          <button onClick={enviarEmail} className="block w-full text-left text-sm py-2 px-4 hover:bg-aw-bg font-semibold text-aw-tiffany-forte">
+            Enviar e-mail
+          </button>
           <button onClick={editar} className="block w-full text-left text-sm py-2 px-4 hover:bg-aw-bg">
             Editar
           </button>

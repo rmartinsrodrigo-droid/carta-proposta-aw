@@ -32,6 +32,7 @@ const inicial: CartaDados = {
   remetente: 'Time de Gente & Gestão · a|w',
   tutor_nome: '',
   tutor_funcao: '',
+  tutor_email: '',
   tutor_whatsapp: '',
   tutor_foto: '',
 }
@@ -100,6 +101,7 @@ export function EditorProposta({
                     remetente: dados.remetente,
                     tutor_nome: dados.tutor_nome ?? '',
                     tutor_funcao: dados.tutor_funcao ?? '',
+                    tutor_email: dados.tutor_email ?? '',
                     tutor_whatsapp: dados.tutor_whatsapp ?? '',
                     tutor_foto: dados.tutor_foto ?? '',
                   })
@@ -181,6 +183,7 @@ export function EditorProposta({
             </div>
             <Input label="Nome" value={dados.tutor_nome ?? ''} onChange={(v) => set('tutor_nome', v)} placeholder="Ex.: Bruna Tanaka" />
             <Input label="Função" value={dados.tutor_funcao ?? ''} onChange={(v) => set('tutor_funcao', v)} placeholder="Ex.: Arquiteta Sênior · Projetos Corporativos" />
+            <Input label="Email" type="email" value={dados.tutor_email ?? ''} onChange={(v) => set('tutor_email', v)} placeholder="bruna.tanaka@awnet.com.br" />
             <Input label="WhatsApp (com DDD)" value={dados.tutor_whatsapp ?? ''} onChange={(v) => set('tutor_whatsapp', v)} placeholder="(11) 98765-4321" />
             <label className="block">
               <span className="block text-[11px] tracking-[0.14em] uppercase font-semibold text-aw-grafite mb-1.5">

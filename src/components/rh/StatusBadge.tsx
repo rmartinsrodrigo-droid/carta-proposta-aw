@@ -8,6 +8,7 @@ const style: Record<PropostaStatus, { bg: string; text: string; label: string }>
   recusada: { bg: 'bg-red-100', text: 'text-red-900', label: 'Recusada' },
   expirada: { bg: 'bg-neutral-800', text: 'text-neutral-200', label: 'Expirada' },
   cancelada: { bg: 'bg-neutral-300', text: 'text-neutral-800', label: 'Cancelada' },
+  email_gerado: { bg: 'bg-aw-tiffany-forte', text: 'text-aw-preto', label: 'Email gerado' },
 }
 
 export function StatusBadge({ status }: { status: PropostaStatus }) {

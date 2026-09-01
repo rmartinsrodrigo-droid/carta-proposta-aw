@@ -23,6 +23,7 @@ export type CartaDados = {
   remetente: string
   tutor_nome?: string | null
   tutor_funcao?: string | null
+  tutor_email?: string | null
   tutor_whatsapp?: string | null
   tutor_foto?: string | null
 }
@@ -50,17 +51,25 @@ const valoresAW: ReadonlyArray<[string, string]> = [
 ]
 
 const passos: ReadonlyArray<[string, string]> = [
-  ['Aceite', 'Você confirma a proposta por aqui, no botão abaixo.'],
-  ['Documentação', 'O RH envia a lista de documentos e conduz a admissão com você.'],
-  ['Preparação', 'Deixamos acesso, equipamento e seu primeiro dia prontos antes de você chegar.'],
-  ['Primeiro dia', 'Você começa sabendo pra onde ir, com quem falar e o que esperar.'],
+  [
+    'Aceite',
+    'Se estiver tudo certo para você, é só confirmar a proposta no botão abaixo. E se ficou alguma dúvida, é só clicar em "Tenho uma dúvida antes" — respondemos pelo WhatsApp.',
+  ],
+  [
+    'Documentação',
+    'Após o aceite, o nosso Departamento Pessoal (DP) entra em contato com você por e-mail para solicitar os documentos necessários e orientar você durante o processo de admissão.',
+  ],
+  [
+    'Primeiro dia',
+    'E então chega o grande dia. A gente vai estar aqui, esperando por você. Vem construir essa história com a gente.',
+  ],
 ]
 
 const agenda: ReadonlyArray<[string, string]> = [
   ['9h', 'Recepção dos novos colaboradores e entrega de equipamentos.'],
   ['10h', 'História, estrutura e valores da a|w.'],
   ['11h', 'Departamento Pessoal: benefícios e contratos · Instituto a|w.'],
-  ['12h', 'Almoço com seu tutor.'],
+  ['12h', 'Almoço.'],
   ['13h', 'QSMS.'],
   ['14h', 'Galpão e logística · foto dos novos colaboradores.'],
   ['15h', 'Universidade a|w.'],
@@ -317,10 +326,9 @@ export function CartaCandidato({
                 </div>
                 <div className={styles.heroBottom}>
                   <div className={styles.heroDash} aria-hidden />
-                  <div className={styles.heroSaudacao}>Parabéns,</div>
                   <h1 className={styles.h1}>{dados.nome || '…'}.</h1>
                   <div className={styles.heroSubtitle}>
-                    Estamos felizes em ter você conosco.
+                    Parabéns pela sua aprovação no processo seletivo da Athié Wohnrath.
                   </div>
                   <button
                     className={styles.heroCta}
@@ -358,15 +366,13 @@ export function CartaCandidato({
 
               <section className={`${styles.welcome} ${styles.rv}`}>
                 <div className={styles.kicker}>Bem-vindo(a)</div>
-                <h2 className={styles.welcomeH2}>
-                  Olá, {dados.nome || '…'}.
-                </h2>
                 <p>
-                  Parabéns pela sua aprovação no processo seletivo da Athié Wohnrath.
+                  Temos uma ótima notícia: você foi aprovado(a) no processo seletivo da
+                  Athié Wohnrath!
                 </p>
                 <p>
-                  Este material foi preparado para apoiar o início da sua jornada conosco e
-                  apresentar tudo o que você precisa para os seus primeiros passos na empresa.
+                  Preparamos este material para apresentar um pouco mais sobre a a|w, trazer
+                  uma mensagem especial do nosso CEO e, claro, os detalhes da sua proposta.
                 </p>
               </section>
 
@@ -391,19 +397,6 @@ export function CartaCandidato({
                     <div className={styles.ceoNome}>Ivo Wohnrath</div>
                     <div className={styles.ceoCargo}>CEO do Grupo Athié Wohnrath</div>
                   </div>
-                </div>
-              </section>
-
-              <section className={styles.valores}>
-                <div className={styles.kicker}>Nossos valores</div>
-                <h2 className={styles.rv}>O que nos move todo dia.</h2>
-                <div className={styles.valoresLista}>
-                  {valoresAW.map(([h, p]) => (
-                    <div key={h} className={`${styles.valorItem} ${styles.rv}`}>
-                      <h3 className={styles.valorTitulo}>{h}</h3>
-                      <p className={styles.valorDesc}>{p}</p>
-                    </div>
-                  ))}
                 </div>
               </section>
 
@@ -540,6 +533,14 @@ export function CartaCandidato({
                         {dados.tutor_funcao && (
                           <div className={styles.tutorFuncao}>{dados.tutor_funcao}</div>
                         )}
+                        {dados.tutor_email && (
+                          <a
+                            className={styles.tutorLink}
+                            href={`mailto:${dados.tutor_email}`}
+                          >
+                            {dados.tutor_email}
+                          </a>
+                        )}
                         {dados.tutor_whatsapp && (
                           <a
                             className={styles.tutorWa}
@@ -564,13 +565,16 @@ export function CartaCandidato({
 
               <section className={styles.steps}>
                 <div className={styles.kicker}>Próximos passos</div>
-                <h2 className={styles.rv}>Como segue daqui.</h2>
+                <h2 className={styles.rv}>E agora, o que acontece?</h2>
+                <p className={`${styles.stepsIntro} ${styles.rv}`}>
+                  Depois do seu aceite, seguimos juntos com os próximos passos:
+                </p>
                 {passos.map(([h, p], i) => (
                   <div key={h} className={`${styles.step} ${styles.rv}`}>
                     <div className={styles.stepNum}>{i + 1}</div>
                     <div>
                       <h3>{h}</h3>
-                      {i === 3 && dados.inicio && (
+                      {i === 2 && dados.inicio && (
                         <div className={styles.stepData}>{dt(dados.inicio)}</div>
                       )}
                       <p>{p}</p>
@@ -580,11 +584,27 @@ export function CartaCandidato({
               </section>
 
               <section className={`${styles.accept} ${styles.rv}`}>
+                {aceitou ? (
+                  <div className={styles.aceitouCard}>
+                    <div className={styles.kicker}>Bem-vindo(a) ao time.</div>
+                    <h2 className={styles.aceitouTitulo}>
+                      Vem pra a|w{primeiro(dados.nome) ? `, ${primeiro(dados.nome)}` : ''}!
+                    </h2>
+                    <p className={styles.aceitouSub}>
+                      Proposta válida até {dt(dados.validade)}.
+                    </p>
+                  </div>
+                ) : (
+                  <>
                 <div className={styles.kicker}>Aceite</div>
                 <h2>
                   Vem pra AW{primeiro(dados.nome) ? `, ${primeiro(dados.nome)}` : ''}.
                 </h2>
-                <p>Ao aceitar, você confirma a proposta e o RH dá sequência à sua admissão.</p>
+                <p>
+                  Ao aceitar esta proposta, você confirma que quer fazer parte do nosso time.
+                  A partir daí, o Departamento Pessoal (DP) entra em contato com você por
+                  e-mail para dar sequência à sua admissão.
+                </p>
                 <div className={styles.val}>Válida até {dt(dados.validade)}</div>
                 <button
                   className={`${styles.btn} ${styles.btnPrimary}`}
@@ -596,9 +616,7 @@ export function CartaCandidato({
                     //      copiando recursoshumanos.aw@awnet.com.br.
                     //      Assunto: `Proposta do candidato ${dados.nome} - Aceita! Vamos iniciar a jornada.`
                     setAceitou(true)
-                    setMsg(
-                      'Recebemos seu aceite. Role pra ver a agenda do seu primeiro dia — ou baixe em PDF.'
-                    )
+                    setMsg('')
                     setTimeout(() => {
                       if (agendaRef.current && scrollRef.current) {
                         const sRect = scrollRef.current.getBoundingClientRect()
@@ -625,6 +643,8 @@ export function CartaCandidato({
                   Tenho uma dúvida antes
                 </a>
                 <div className={styles.msg}>{msg}</div>
+                  </>
+                )}
               </section>
 
               {aceitou && (
@@ -641,26 +661,7 @@ export function CartaCandidato({
                       return (
                         <li key={hora} className={styles.agendaItem}>
                           <div className={styles.agendaHora}>{hora}</div>
-                          <div className={styles.agendaDesc}>
-                            {desc}
-                            {almoco && dados.tutor_nome && (
-                              <div className={styles.agendaTutor}>
-                                Com {dados.tutor_nome}
-                                {dados.tutor_whatsapp && (
-                                  <>
-                                    {' · '}
-                                    <a
-                                      href={whatsappHref(dados.tutor_whatsapp)}
-                                      target="_blank"
-                                      rel="noopener noreferrer"
-                                    >
-                                      {dados.tutor_whatsapp}
-                                    </a>
-                                  </>
-                                )}
-                              </div>
-                            )}
-                          </div>
+                          <div className={styles.agendaDesc}>{desc}</div>
                         </li>
                       )
                     })}

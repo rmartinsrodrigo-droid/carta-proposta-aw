@@ -33,6 +33,7 @@ export default async function CartaCandidatoPage({
     remetente: p.remetente,
     tutor_nome: p.tutor_nome ?? null,
     tutor_funcao: p.tutor_funcao ?? null,
+    tutor_email: p.tutor_email ?? null,
     tutor_whatsapp: p.tutor_whatsapp ?? null,
     tutor_foto: p.tutor_foto ?? null,
   }

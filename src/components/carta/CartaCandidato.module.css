@@ -603,6 +603,15 @@
   border-bottom: 1px solid rgba(121, 203, 198, 0.4);
 }
 .tutorWa:hover { border-color: var(--aw-tiffany-forte); }
+.tutorLink {
+  display: block;
+  font-size: 12.5px;
+  color: var(--aw-tiffany-forte);
+  text-decoration: none;
+  margin-bottom: 4px;
+  overflow-wrap: anywhere;
+}
+.tutorLink:hover { text-decoration: underline; }
 .tutorNota {
   margin-top: 12px;
   font-size: 12.5px;
@@ -697,6 +706,12 @@
   font-size: 26px;
   margin-bottom: 24px;
   color: var(--aw-branco);
+}
+.stepsIntro {
+  font-size: 14.5px;
+  line-height: 1.55;
+  color: rgba(255, 255, 255, 0.72);
+  margin-bottom: 26px;
 }
 .step {
   display: flex;
@@ -808,6 +823,29 @@
   padding-top: 8px;
   min-height: 18px;
   font-weight: 500;
+}
+.aceitouCard {
+  text-align: center;
+  padding: 20px 0 12px;
+}
+.aceitouCard .kicker {
+  color: rgba(0, 0, 0, 0.6);
+  margin-bottom: 20px;
+}
+.aceitouTitulo {
+  font-weight: 800;
+  font-size: 36px;
+  line-height: 1.05;
+  letter-spacing: -0.025em;
+  color: var(--aw-preto);
+  margin-bottom: 20px !important;
+}
+.aceitouSub {
+  font-size: 14px;
+  color: var(--aw-preto);
+  opacity: 0.72;
+  font-weight: 500;
+  margin-bottom: 0 !important;
 }
 
 /* Foot */

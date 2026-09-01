@@ -21,6 +21,7 @@ export type PropostaMock = {
   remetente: string
   tutor_nome: string
   tutor_funcao: string
+  tutor_email?: string
   tutor_whatsapp: string
   tutor_foto?: string
   criada_em: string

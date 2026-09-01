@@ -17,6 +17,7 @@ const filtros: Array<{ label: string; status: PropostaStatus | 'todas' }> = [
   { label: 'Recusadas', status: 'recusada' },
   { label: 'Expiradas', status: 'expirada' },
   { label: 'Canceladas', status: 'cancelada' },
+  { label: 'Email gerado', status: 'email_gerado' },
 ]
 
 export default function PropostasPage() {
