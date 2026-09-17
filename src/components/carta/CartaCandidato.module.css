@@ -21,6 +21,7 @@
   .stageCandidate {
     padding: 48px 20px;
     align-items: flex-start;
+    justify-content: center;
   }
   .stageCandidate .phone {
     background: transparent;
@@ -32,6 +33,88 @@
     max-height: 900px;
     min-height: 640px;
     border-radius: 6px;
+  }
+}
+
+/* Painel institucional aparece só em desktop grande (>= 1200px).
+   Em telas menores fica escondido — a carta continua sozinha centralizada. */
+.deskAside { display: none; }
+
+@media (min-width: 1200px) {
+  .stageCandidate {
+    background: linear-gradient(135deg, #050505 0%, #000 55%, #061a1a 100%);
+    padding: 60px 40px;
+    gap: 80px;
+    align-items: center;
+    justify-content: center;
+  }
+  .deskAside {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    flex: 0 1 400px;
+    height: min(900px, calc(100vh - 120px));
+    min-height: 640px;
+    color: var(--aw-branco);
+    padding: 8px 0;
+  }
+  .deskAsideLogo {
+    height: 42px;
+    width: auto;
+    display: block;
+  }
+  .deskAsideKicker {
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--aw-tiffany);
+    margin-bottom: 20px;
+  }
+  .deskAsideH2 {
+    font-weight: 800;
+    font-size: 44px;
+    line-height: 1.05;
+    letter-spacing: -0.025em;
+    color: var(--aw-branco);
+    margin: 0 0 22px;
+  }
+  .deskAsideP {
+    font-size: 15.5px;
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.72);
+    max-width: 380px;
+    margin: 0;
+  }
+  .deskAsideP strong {
+    color: var(--aw-tiffany);
+    font-weight: 700;
+  }
+  .deskAsideFoot {
+    font-size: 11.5px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--aw-prata);
+    font-weight: 600;
+  }
+  .deskAsideFootLinha {
+    width: 44px;
+    height: 2px;
+    background: var(--aw-tiffany);
+    margin-bottom: 14px;
+  }
+}
+
+/* Em telas realmente amplas, dá mais respiro entre os dois blocos */
+@media (min-width: 1440px) {
+  .stageCandidate {
+    gap: 120px;
+    padding: 80px 60px;
+  }
+  .deskAside {
+    flex: 0 1 440px;
+  }
+  .deskAsideH2 {
+    font-size: 52px;
   }
 }
 

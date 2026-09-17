@@ -303,8 +303,41 @@ export function CartaCandidato({
     ...(dados.inicio ? ([['Início previsto', dt(dados.inicio)]] as Array<[string, React.ReactNode]>) : []),
   ]
 
+  const primeiroNome = (n: string) => n.trim().split(/\s+/)[0] || ''
+
   return (
     <div className={mode === 'candidate' ? styles.stageCandidate : styles.stage}>
+      {mode === 'candidate' && (
+        <aside className={styles.deskAside} aria-hidden="true">
+          <div className={styles.deskAsideTop}>
+            <Image
+              src="/logos/logo-branco.png"
+              alt=""
+              width={280}
+              height={48}
+              quality={95}
+              className={styles.deskAsideLogo}
+            />
+          </div>
+          <div className={styles.deskAsideMid}>
+            <div className={styles.deskAsideKicker}>Carta proposta</div>
+            <h2 className={styles.deskAsideH2}>
+              {dados.nome
+                ? `Boas-vindas, ${primeiroNome(dados.nome)}.`
+                : 'Sua nova jornada começa aqui.'}
+            </h2>
+            <p className={styles.deskAsideP}>
+              Este documento é <strong>exclusivo e confidencial</strong>. Leve o tempo
+              que precisar pra conhecer nossa proposta — e, se ficar qualquer dúvida,
+              a gente responde por WhatsApp.
+            </p>
+          </div>
+          <div className={styles.deskAsideFoot}>
+            <div className={styles.deskAsideFootLinha} />
+            Arquitetura e engenharia · do projeto à obra
+          </div>
+        </aside>
+      )}
       <div className={styles.phone}>
         <div className={styles.screen}>
           <div ref={progressRef} className={styles.progress} />
