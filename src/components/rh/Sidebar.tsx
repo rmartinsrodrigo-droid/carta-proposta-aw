@@ -2,6 +2,7 @@
 
 import Link from 'next/link'
 import { useRouter, usePathname } from 'next/navigation'
+import { useEffect, useState } from 'react'
 import { iniciais, type UsuarioRh } from '@/lib/mock/usuarios'
 
 const items = [
@@ -56,6 +57,22 @@ const items = [
 export function RhSidebar({ user }: { user: UsuarioRh }) {
   const pathname = usePathname()
   const router = useRouter()
+  const [aberto, setAberto] = useState(false)
+
+  // Fecha o drawer quando a rota muda
+  useEffect(() => {
+    setAberto(false)
+  }, [pathname])
+
+  // Bloqueia scroll do body quando drawer aberto (mobile)
+  useEffect(() => {
+    if (aberto) {
+      document.body.style.overflow = 'hidden'
+      return () => {
+        document.body.style.overflow = ''
+      }
+    }
+  }, [aberto])
 
   const sair = () => {
     document.cookie = 'rh_email=; path=/; max-age=0'
@@ -64,59 +81,122 @@ export function RhSidebar({ user }: { user: UsuarioRh }) {
     router.refresh()
   }
 
-  return (
-    <aside className="w-64 shrink-0 bg-aw-preto text-aw-branco flex flex-col min-h-screen">
-      <div className="px-6 py-7 border-b border-white/10">
-        <div className="text-[11px] tracking-[0.18em] uppercase text-aw-prata">Athié Wohnrath</div>
-        <div className="text-lg font-bold mt-1">Carta Proposta</div>
+  const menu = (
+    <nav className="flex-1 py-4">
+      {items.map((item) => {
+        const active =
+          pathname === item.href ||
+          (item.href !== '/rh/dashboard' && pathname?.startsWith(item.href) === true)
+        const baseCls =
+          'flex items-center gap-3 px-6 py-3 text-sm font-medium transition-colors'
+        return (
+          <Link
+            key={item.href}
+            href={item.href}
+            className={`${baseCls} ${
+              active
+                ? 'bg-aw-tiffany text-aw-preto'
+                : 'text-white/75 hover:bg-white/5 hover:text-white'
+            }`}
+          >
+            {item.icon}
+            {item.label}
+          </Link>
+        )
+      })}
+    </nav>
+  )
+
+  const rodape = (
+    <div className="p-4 border-t border-white/10 space-y-3">
+      <div className="flex items-center gap-3 px-2 py-2">
+        <div className="w-9 h-9 bg-aw-tiffany text-aw-preto flex items-center justify-center font-bold text-sm shrink-0">
+          {iniciais(user.nome)}
+        </div>
+        <div className="min-w-0 flex-1">
+          <div className="text-sm font-semibold truncate">{user.nome}</div>
+          <div className="text-[11px] text-aw-prata truncate">{user.email}</div>
+        </div>
       </div>
+      <button
+        onClick={sair}
+        type="button"
+        className="w-full flex items-center gap-2 px-3 py-2 text-[13px] text-white/60 hover:bg-white/5 hover:text-white transition-colors"
+      >
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+          <polyline points="16 17 21 12 16 7" />
+          <line x1="21" y1="12" x2="9" y2="12" />
+        </svg>
+        Sair
+      </button>
+    </div>
+  )
 
-      <nav className="flex-1 py-4">
-        {items.map((item) => {
-          const active =
-            pathname === item.href ||
-            (item.href !== '/rh/dashboard' && pathname?.startsWith(item.href) === true)
-          const baseCls = 'flex items-center gap-3 px-6 py-3 text-sm font-medium transition-colors'
-          return (
-            <Link
-              key={item.href}
-              href={item.href}
-              className={`${baseCls} ${
-                active
-                  ? 'bg-aw-tiffany text-aw-preto'
-                  : 'text-white/75 hover:bg-white/5 hover:text-white'
-              }`}
-            >
-              {item.icon}
-              {item.label}
-            </Link>
-          )
-        })}
-      </nav>
+  const cabecalho = (
+    <div className="px-6 py-7 border-b border-white/10">
+      <div className="text-[11px] tracking-[0.18em] uppercase text-aw-prata">Athié Wohnrath</div>
+      <div className="text-lg font-bold mt-1">Carta Proposta</div>
+    </div>
+  )
 
-      <div className="p-4 border-t border-white/10 space-y-3">
-        <div className="flex items-center gap-3 px-2 py-2">
-          <div className="w-9 h-9 bg-aw-tiffany text-aw-preto flex items-center justify-center font-bold text-sm shrink-0">
-            {iniciais(user.nome)}
+  return (
+    <>
+      {/* Topbar mobile — visível abaixo de lg */}
+      <header className="lg:hidden sticky top-0 z-30 flex items-center justify-between bg-aw-preto text-aw-branco px-4 py-3 border-b border-white/10">
+        <div className="min-w-0">
+          <div className="text-[9px] tracking-[0.18em] uppercase text-aw-prata leading-tight">
+            Athié Wohnrath
           </div>
-          <div className="min-w-0 flex-1">
-            <div className="text-sm font-semibold truncate">{user.nome}</div>
-            <div className="text-[11px] text-aw-prata truncate">{user.email}</div>
-          </div>
+          <div className="text-sm font-bold leading-tight">Carta Proposta</div>
         </div>
         <button
-          onClick={sair}
           type="button"
-          className="w-full flex items-center gap-2 px-3 py-2 text-[13px] text-white/60 hover:bg-white/5 hover:text-white transition-colors"
+          onClick={() => setAberto((v) => !v)}
+          aria-label={aberto ? 'Fechar menu' : 'Abrir menu'}
+          className="w-10 h-10 flex items-center justify-center hover:bg-white/10 transition-colors"
         >
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
-            <polyline points="16 17 21 12 16 7" />
-            <line x1="21" y1="12" x2="9" y2="12" />
-          </svg>
-          Sair
+          {aberto ? (
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <line x1="18" y1="6" x2="6" y2="18" />
+              <line x1="6" y1="6" x2="18" y2="18" />
+            </svg>
+          ) : (
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <line x1="3" y1="6" x2="21" y2="6" />
+              <line x1="3" y1="12" x2="21" y2="12" />
+              <line x1="3" y1="18" x2="21" y2="18" />
+            </svg>
+          )}
         </button>
-      </div>
-    </aside>
+      </header>
+
+      {/* Backdrop escuro (mobile, quando drawer aberto) */}
+      {aberto && (
+        <div
+          className="lg:hidden fixed inset-0 z-40 bg-black/60"
+          onClick={() => setAberto(false)}
+          aria-hidden
+        />
+      )}
+
+      {/* Drawer mobile */}
+      <aside
+        className={`lg:hidden fixed top-0 left-0 z-50 h-full w-72 bg-aw-preto text-aw-branco flex flex-col transition-transform duration-200 ${
+          aberto ? 'translate-x-0' : '-translate-x-full'
+        }`}
+      >
+        {cabecalho}
+        {menu}
+        {rodape}
+      </aside>
+
+      {/* Sidebar desktop — visível a partir de lg */}
+      <aside className="hidden lg:flex w-64 shrink-0 bg-aw-preto text-aw-branco flex-col min-h-screen">
+        {cabecalho}
+        {menu}
+        {rodape}
+      </aside>
+    </>
   )
 }

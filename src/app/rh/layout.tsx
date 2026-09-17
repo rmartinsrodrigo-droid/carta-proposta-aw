@@ -13,12 +13,12 @@ export default async function RhLayout({ children }: { children: React.ReactNode
   if (!user) redirect('/')
 
   return (
-    <div className="flex min-h-screen bg-aw-bg text-aw-preto">
+    <div className="lg:flex min-h-screen bg-aw-bg text-aw-preto">
       <RhSidebar user={user} />
-      <div className="flex-1 min-w-0 flex flex-col">
+      <div className="flex-1 min-w-0 flex flex-col min-h-[calc(100vh-56px)] lg:min-h-screen">
         <main className="flex-1">{children}</main>
-        <footer className="border-t border-aw-prata/30 bg-white px-8 py-3 flex items-center justify-between text-[11px] text-aw-grafite">
-          <div className="flex items-center gap-3">
+        <footer className="border-t border-aw-prata/30 bg-white px-4 sm:px-6 lg:px-8 py-3 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-1 text-[11px] text-aw-grafite">
+          <div className="flex items-center gap-2 sm:gap-3 flex-wrap">
             <span className="font-semibold tracking-wider uppercase text-[10px]">
               Carta Proposta · a|w
             </span>

@@ -58,29 +58,29 @@ export function DetalhePropostaClient({ id }: { id: string }) {
   ].sort((a, b) => new Date(b.quando).getTime() - new Date(a.quando).getTime())
 
   return (
-    <div className="max-w-6xl mx-auto px-8 py-8">
-      <div className="flex items-center gap-2 text-sm text-aw-grafite mb-4">
-        <Link href="/rh/propostas" className="hover:text-aw-preto">Propostas</Link>
-        <span>›</span>
-        <span className="text-aw-preto font-medium">{p.candidato_nome}</span>
+    <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6 lg:py-8">
+      <div className="flex items-center gap-2 text-sm text-aw-grafite mb-4 min-w-0">
+        <Link href="/rh/propostas" className="hover:text-aw-preto shrink-0">Propostas</Link>
+        <span className="shrink-0">›</span>
+        <span className="text-aw-preto font-medium truncate">{p.candidato_nome}</span>
       </div>
 
-      <div className="flex items-start justify-between mb-8">
-        <div>
-          <div className="flex items-center gap-3 mb-2">
+      <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4 mb-6 lg:mb-8">
+        <div className="min-w-0">
+          <div className="flex items-center flex-wrap gap-2 sm:gap-3 mb-2">
             <StatusBadge status={p.status} />
             <span className="text-[12px] text-aw-grafite">ID {p.id}</span>
           </div>
-          <h1 className="text-3xl font-bold tracking-tight">{p.candidato_nome}</h1>
-          <p className="text-aw-grafite mt-1">
+          <h1 className="text-2xl sm:text-3xl font-bold tracking-tight">{p.candidato_nome}</h1>
+          <p className="text-aw-grafite mt-1 text-sm sm:text-base">
             {p.cargo} · {p.area}
           </p>
         </div>
-        <div className="flex gap-2">
+        <div className="flex gap-2 shrink-0">
           <Link
             href={linkPathRelativo}
             target="_blank"
-            className="inline-flex items-center gap-2 bg-aw-preto text-aw-branco px-4 py-2.5 text-sm font-semibold hover:bg-aw-grafite transition-colors"
+            className="inline-flex items-center justify-center gap-2 bg-aw-preto text-aw-branco px-4 py-2.5 text-sm font-semibold hover:bg-aw-grafite transition-colors flex-1 sm:flex-initial"
           >
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
@@ -92,8 +92,8 @@ export function DetalhePropostaClient({ id }: { id: string }) {
         </div>
       </div>
 
-      <div className="grid grid-cols-3 gap-6">
-        <div className="col-span-2 space-y-6">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div className="lg:col-span-2 space-y-6">
           <div className="bg-aw-preto text-aw-branco p-6">
             <div className="flex items-center justify-between gap-4 mb-2">
               <div className="text-[11px] tracking-[0.18em] uppercase text-aw-tiffany">
@@ -204,11 +204,11 @@ export function DetalhePropostaClient({ id }: { id: string }) {
 
 function Row({ label, value, bold }: { label: string; value: string; bold?: boolean }) {
   return (
-    <div className="flex px-6 py-3 gap-6">
-      <dt className="text-[11px] tracking-[0.14em] uppercase text-aw-grafite w-40 shrink-0 pt-0.5 font-semibold">
+    <div className="flex flex-col sm:flex-row px-4 sm:px-6 py-3 gap-1 sm:gap-6">
+      <dt className="text-[10px] sm:text-[11px] tracking-[0.14em] uppercase text-aw-grafite sm:w-40 shrink-0 pt-0.5 font-semibold">
         {label}
       </dt>
-      <dd className={`flex-1 text-sm ${bold ? 'font-bold text-base' : ''}`}>{value}</dd>
+      <dd className={`flex-1 text-sm break-words ${bold ? 'font-bold text-base' : ''}`}>{value}</dd>
     </div>
   )
 }

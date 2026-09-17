@@ -24,14 +24,14 @@ export default function DashboardPage() {
     .slice(0, 5)
 
   return (
-    <div className="max-w-6xl mx-auto px-8 py-8">
-      <div className="flex items-start justify-between mb-8">
-        <div>
+    <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6 lg:py-8">
+      <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4 mb-6 lg:mb-8">
+        <div className="min-w-0">
           <div className="text-[11px] tracking-[0.18em] uppercase text-aw-tiffany-forte">
             Painel RH
           </div>
-          <h1 className="text-3xl font-bold mt-1 tracking-tight">Bom dia.</h1>
-          <p className="text-aw-grafite mt-1">
+          <h1 className="text-2xl sm:text-3xl font-bold mt-1 tracking-tight">Bom dia.</h1>
+          <p className="text-aw-grafite mt-1 text-sm sm:text-base">
             {pendentes > 0 && (
               <>
                 {pendentes} proposta{pendentes > 1 ? 's' : ''} aguardando envio ao candidato.{' '}
@@ -47,7 +47,7 @@ export default function DashboardPage() {
         </div>
         <Link
           href="/rh/propostas/nova"
-          className="inline-flex items-center gap-2 bg-aw-preto text-aw-branco px-5 py-3 text-sm font-semibold hover:bg-aw-grafite transition-colors"
+          className="inline-flex items-center justify-center gap-2 bg-aw-preto text-aw-branco px-5 py-3 text-sm font-semibold hover:bg-aw-grafite transition-colors shrink-0"
         >
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
             <line x1="12" y1="5" x2="12" y2="19" />
@@ -57,7 +57,7 @@ export default function DashboardPage() {
         </Link>
       </div>
 
-      <div className="grid grid-cols-4 gap-4 mb-8">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mb-6 lg:mb-8">
         <KPI label="Total no mês" value={total} sub="propostas emitidas" />
         <KPI label="Aceitas" value={aceitas} sub={`${taxaAceite}% de taxa`} accent />
         <KPI label="Abertas sem decisão" value={abertas} sub="candidato já viu" />
@@ -69,7 +69,7 @@ export default function DashboardPage() {
       </div>
 
       <div className="bg-white border border-aw-prata/30">
-        <div className="flex items-center justify-between px-6 py-4 border-b border-aw-prata/30">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 px-4 sm:px-6 py-4 border-b border-aw-prata/30">
           <div>
             <div className="text-[11px] tracking-[0.18em] uppercase text-aw-tiffany-forte">
               Atualizadas recentemente
@@ -80,7 +80,9 @@ export default function DashboardPage() {
             Ver todas
           </Link>
         </div>
-        <table className="w-full">
+
+        {/* Tabela desktop */}
+        <table className="hidden md:table w-full">
           <thead>
             <tr className="text-[11px] tracking-[0.14em] uppercase text-aw-grafite text-left">
               <th className="px-6 py-3 font-semibold">Candidato</th>
@@ -119,6 +121,34 @@ export default function DashboardPage() {
             )}
           </tbody>
         </table>
+
+        {/* Cards mobile */}
+        <div className="md:hidden divide-y divide-aw-prata/20">
+          {recentes.map((p) => (
+            <Link
+              key={p.id}
+              href={`/rh/propostas/${p.id}`}
+              className="block px-4 py-3.5 hover:bg-aw-bg transition-colors"
+            >
+              <div className="flex items-start justify-between gap-3 mb-1.5">
+                <div className="min-w-0 flex-1">
+                  <div className="font-semibold truncate">{p.candidato_nome}</div>
+                  <div className="text-[12px] text-aw-grafite truncate">{p.cargo}</div>
+                </div>
+                <StatusBadge status={p.status} />
+              </div>
+              <div className="flex items-center justify-between text-[12px]">
+                <span className="font-semibold text-aw-preto">{fmtBRL(p.salario_centavos)}</span>
+                <span className="text-aw-grafite">{fmtRelativo(p.atualizada_em)}</span>
+              </div>
+            </Link>
+          ))}
+          {recentes.length === 0 && (
+            <div className="px-4 py-8 text-center text-aw-grafite text-sm">
+              Nenhuma proposta ainda. Crie a primeira com o botão "Nova proposta".
+            </div>
+          )}
+        </div>
       </div>
     </div>
   )
@@ -126,12 +156,12 @@ export default function DashboardPage() {
 
 function KPI({ label, value, sub, accent }: { label: string; value: number; sub: string; accent?: boolean }) {
   return (
-    <div className={`p-5 border ${accent ? 'bg-aw-tiffany border-aw-tiffany' : 'bg-white border-aw-prata/30'}`}>
-      <div className={`text-[11px] tracking-[0.14em] uppercase font-semibold ${accent ? 'text-aw-preto/70' : 'text-aw-grafite'}`}>
+    <div className={`p-4 sm:p-5 border ${accent ? 'bg-aw-tiffany border-aw-tiffany' : 'bg-white border-aw-prata/30'}`}>
+      <div className={`text-[10px] sm:text-[11px] tracking-[0.14em] uppercase font-semibold leading-tight ${accent ? 'text-aw-preto/70' : 'text-aw-grafite'}`}>
         {label}
       </div>
-      <div className={`text-4xl font-bold mt-2 tracking-tight ${accent ? 'text-aw-preto' : ''}`}>{value}</div>
-      <div className={`text-[12px] mt-1 ${accent ? 'text-aw-preto/70' : 'text-aw-grafite'}`}>{sub}</div>
+      <div className={`text-3xl sm:text-4xl font-bold mt-2 tracking-tight ${accent ? 'text-aw-preto' : ''}`}>{value}</div>
+      <div className={`text-[11px] sm:text-[12px] mt-1 leading-tight ${accent ? 'text-aw-preto/70' : 'text-aw-grafite'}`}>{sub}</div>
     </div>
   )
 }

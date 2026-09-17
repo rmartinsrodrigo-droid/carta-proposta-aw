@@ -49,6 +49,7 @@ export function EditorProposta({
   const [dados, setDados] = useState<CartaDados>(initial ?? inicial)
   const [salvo, setSalvo] = useState<null | 'rascunho' | 'link'>(null)
   const [erro, setErro] = useState<string | null>(null)
+  const [abaMobile, setAbaMobile] = useState<'form' | 'previa'>('form')
 
   const set = <K extends keyof CartaDados>(k: K, v: CartaDados[K]) => {
     setErro(null)
@@ -153,16 +154,46 @@ export function EditorProposta({
   }
 
   return (
-    <div className="flex min-h-[calc(100vh-0px)]">
+    <div className="lg:flex min-h-[calc(100vh-0px)]">
+      {/* Tabs Form/Prévia — só mobile/tablet */}
+      <div className="lg:hidden sticky top-14 z-20 bg-white border-b border-aw-prata/30 flex">
+        <button
+          type="button"
+          onClick={() => setAbaMobile('form')}
+          className={`flex-1 py-3 text-xs font-semibold uppercase tracking-wider transition-colors ${
+            abaMobile === 'form'
+              ? 'bg-aw-preto text-aw-branco'
+              : 'bg-white text-aw-grafite hover:text-aw-preto'
+          }`}
+        >
+          Formulário
+        </button>
+        <button
+          type="button"
+          onClick={() => setAbaMobile('previa')}
+          className={`flex-1 py-3 text-xs font-semibold uppercase tracking-wider transition-colors ${
+            abaMobile === 'previa'
+              ? 'bg-aw-preto text-aw-branco'
+              : 'bg-white text-aw-grafite hover:text-aw-preto'
+          }`}
+        >
+          Prévia ao vivo
+        </button>
+      </div>
+
       {/* Painel de edição */}
-      <div className="w-[520px] shrink-0 bg-white border-r border-aw-prata/30 overflow-auto">
+      <div
+        className={`${
+          abaMobile === 'form' ? 'block' : 'hidden'
+        } lg:block w-full lg:w-[520px] lg:shrink-0 bg-white lg:border-r border-aw-prata/30 lg:overflow-auto`}
+      >
         {/* Header do editor */}
-        <div className="sticky top-0 bg-white border-b border-aw-prata/30 px-6 py-4 z-10">
-          <div className="flex items-center justify-between mb-3">
-            <div className="flex items-center gap-2 text-sm text-aw-grafite">
-              <Link href="/rh/propostas" className="hover:text-aw-preto">Propostas</Link>
-              <span>›</span>
-              <span className="text-aw-preto font-medium">
+        <div className="lg:sticky lg:top-0 bg-white border-b border-aw-prata/30 px-4 sm:px-6 py-4 z-10">
+          <div className="flex flex-wrap items-center justify-between gap-2 mb-3">
+            <div className="flex items-center gap-2 text-sm text-aw-grafite min-w-0">
+              <Link href="/rh/propostas" className="hover:text-aw-preto shrink-0">Propostas</Link>
+              <span className="shrink-0">›</span>
+              <span className="text-aw-preto font-medium truncate">
                 {modo === 'editar' ? `Editar · ${dados.nome || 'proposta'}` : 'Nova proposta'}
               </span>
             </div>
@@ -170,7 +201,7 @@ export function EditorProposta({
               {modo === 'editar' ? 'Editando' : 'Rascunho'}
             </span>
           </div>
-          <div className="flex gap-2">
+          <div className="flex flex-col sm:flex-row gap-2">
             <button
               className="flex-1 inline-flex items-center justify-center gap-2 bg-white border border-aw-preto text-aw-preto px-4 py-2.5 text-sm font-semibold hover:bg-aw-preto hover:text-aw-branco transition-colors"
               onClick={salvarRascunho}
@@ -203,7 +234,7 @@ export function EditorProposta({
         </div>
 
         {/* Blocos do form */}
-        <div className="p-6 space-y-8">
+        <div className="p-4 sm:p-6 space-y-8">
           <Bloco titulo="Candidato">
             <Input label="Nome completo" value={dados.nome} onChange={(v) => set('nome', v)} placeholder="Ex.: Ana Beatriz Moreira" />
             <Input label="Email" type="email" value={dados.candidato_email ?? ''} onChange={(v) => set('candidato_email', v)} placeholder="ana.moreira@gmail.com" />
@@ -321,11 +352,15 @@ export function EditorProposta({
       </div>
 
       {/* Prévia ao vivo */}
-      <div className="flex-1 bg-neutral-900 overflow-hidden relative">
-        <div className="absolute top-4 left-4 z-10 text-[10px] tracking-[0.14em] uppercase font-semibold text-white/50">
+      <div
+        className={`${
+          abaMobile === 'previa' ? 'block' : 'hidden'
+        } lg:block flex-1 bg-neutral-900 overflow-hidden relative`}
+      >
+        <div className="hidden lg:block absolute top-4 left-4 z-10 text-[10px] tracking-[0.14em] uppercase font-semibold text-white/50">
           Prévia ao vivo · como o candidato vai ver
         </div>
-        <div className="h-screen overflow-auto flex items-start justify-center py-8">
+        <div className="min-h-[60vh] lg:h-screen overflow-auto flex items-start justify-center py-6 lg:py-8">
           <CartaCandidato dados={dados.nome || dados.cargo ? dados : {
             ...dados,
             nome: dados.nome || 'Nome do candidato',
