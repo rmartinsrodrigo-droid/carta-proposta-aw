@@ -760,6 +760,15 @@ export function CartaCandidato({
           </div>
         </div>
       </div>
+      {mode === 'candidate' && (
+        <aside className={styles.deskAsideRight} aria-hidden="true">
+          <div className={styles.deskAsideRightWatermark}>a|w</div>
+          <div className={styles.deskAsideRightInfo}>
+            <strong>Documento confidencial</strong>
+            Exclusivo do candidato ·<br />não compartilhe
+          </div>
+        </aside>
+      )}
     </div>
   )
 }

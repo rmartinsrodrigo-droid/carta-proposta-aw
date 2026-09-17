@@ -15,36 +15,39 @@
   background: var(--aw-preto);
   min-height: 100vh;
 }
-/* Desktop: apresenta a carta como "documento" centralizado com respiro nas laterais.
-   Mobile mantém edge-to-edge full-screen. */
+/* Fundo institucional pra qualquer tela >= tablet — evita "preto vazio".
+   Sutil gradient radial que dá profundidade sem competir com a carta. */
 @media (min-width: 768px) {
   .stageCandidate {
-    padding: 48px 20px;
+    padding: 40px 20px;
     align-items: flex-start;
     justify-content: center;
+    background:
+      radial-gradient(ellipse at 15% 30%, rgba(161, 224, 221, 0.05) 0%, transparent 50%),
+      radial-gradient(ellipse at 85% 70%, rgba(161, 224, 221, 0.04) 0%, transparent 50%),
+      linear-gradient(135deg, #050505 0%, #000 60%, #061a1a 100%);
   }
   .stageCandidate .phone {
     background: transparent;
-    box-shadow: 0 40px 100px -20px rgba(0, 0, 0, 0.55);
+    box-shadow: 0 40px 100px -20px rgba(0, 0, 0, 0.65);
     max-width: 480px;
   }
   .stageCandidate .screen {
-    height: calc(100vh - 96px);
+    height: calc(100vh - 80px);
     max-height: 900px;
     min-height: 640px;
     border-radius: 6px;
   }
 }
 
-/* Painel institucional aparece só em desktop grande (>= 1200px).
-   Em telas menores fica escondido — a carta continua sozinha centralizada. */
+/* Painel institucional aparece a partir de laptops padrão (>= 1024px). */
 .deskAside { display: none; }
+.deskAsideRight { display: none; }
 
-@media (min-width: 1200px) {
+@media (min-width: 1024px) {
   .stageCandidate {
-    background: linear-gradient(135deg, #050505 0%, #000 55%, #061a1a 100%);
-    padding: 60px 40px;
-    gap: 80px;
+    padding: 48px 32px;
+    gap: 56px;
     align-items: center;
     justify-content: center;
   }
@@ -52,14 +55,14 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    flex: 0 1 400px;
-    height: min(900px, calc(100vh - 120px));
+    flex: 0 1 340px;
+    height: min(900px, calc(100vh - 96px));
     min-height: 640px;
     color: var(--aw-branco);
     padding: 8px 0;
   }
   .deskAsideLogo {
-    height: 42px;
+    height: 38px;
     width: auto;
     display: block;
   }
@@ -68,21 +71,21 @@
     letter-spacing: 0.18em;
     text-transform: uppercase;
     color: var(--aw-tiffany);
-    margin-bottom: 20px;
+    margin-bottom: 18px;
   }
   .deskAsideH2 {
     font-weight: 800;
-    font-size: 44px;
+    font-size: 38px;
     line-height: 1.05;
     letter-spacing: -0.025em;
     color: var(--aw-branco);
-    margin: 0 0 22px;
+    margin: 0 0 20px;
   }
   .deskAsideP {
-    font-size: 15.5px;
+    font-size: 14.5px;
     line-height: 1.6;
     color: rgba(255, 255, 255, 0.72);
-    max-width: 380px;
+    max-width: 340px;
     margin: 0;
   }
   .deskAsideP strong {
@@ -90,31 +93,90 @@
     font-weight: 700;
   }
   .deskAsideFoot {
-    font-size: 11.5px;
+    font-size: 11px;
     letter-spacing: 0.14em;
     text-transform: uppercase;
     color: var(--aw-prata);
     font-weight: 600;
   }
   .deskAsideFootLinha {
-    width: 44px;
+    width: 40px;
     height: 2px;
     background: var(--aw-tiffany);
-    margin-bottom: 14px;
+    margin-bottom: 12px;
   }
 }
 
-/* Em telas realmente amplas, dá mais respiro entre os dois blocos */
-@media (min-width: 1440px) {
+/* A partir de 1280px, adiciona coluna DIREITA com watermark AW —
+   ocupa o espaço em vez de deixar preto vazio. */
+@media (min-width: 1280px) {
+  .stageCandidate {
+    gap: 80px;
+    padding: 60px 40px;
+  }
+  .deskAside {
+    flex: 0 1 380px;
+  }
+  .deskAsideH2 {
+    font-size: 44px;
+  }
+  .deskAsideRight {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-end;
+    text-align: right;
+    flex: 0 1 240px;
+    height: min(900px, calc(100vh - 120px));
+    min-height: 640px;
+    padding: 8px 0;
+    color: var(--aw-prata);
+  }
+  .deskAsideRightWatermark {
+    font-family: inherit;
+    font-weight: 800;
+    font-size: 92px;
+    line-height: 0.9;
+    letter-spacing: -0.04em;
+    color: rgba(161, 224, 221, 0.12);
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+    user-select: none;
+    text-transform: uppercase;
+  }
+  .deskAsideRightInfo {
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--aw-prata);
+    font-weight: 600;
+    line-height: 1.6;
+  }
+  .deskAsideRightInfo strong {
+    color: var(--aw-tiffany);
+    font-weight: 700;
+    display: block;
+    margin-bottom: 6px;
+  }
+}
+
+/* Em telas realmente amplas, dá mais respiro entre os três blocos */
+@media (min-width: 1600px) {
   .stageCandidate {
     gap: 120px;
-    padding: 80px 60px;
+    padding: 80px 80px;
   }
   .deskAside {
     flex: 0 1 440px;
   }
   .deskAsideH2 {
     font-size: 52px;
+  }
+  .deskAsideRight {
+    flex: 0 1 300px;
+  }
+  .deskAsideRightWatermark {
+    font-size: 120px;
   }
 }
 
