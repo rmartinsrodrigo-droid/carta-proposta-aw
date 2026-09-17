@@ -48,9 +48,101 @@ export function EditorProposta({
   const modo: 'nova' | 'editar' = propostaId ? 'editar' : 'nova'
   const [dados, setDados] = useState<CartaDados>(initial ?? inicial)
   const [salvo, setSalvo] = useState<null | 'rascunho' | 'link'>(null)
+  const [erro, setErro] = useState<string | null>(null)
 
-  const set = <K extends keyof CartaDados>(k: K, v: CartaDados[K]) =>
+  const set = <K extends keyof CartaDados>(k: K, v: CartaDados[K]) => {
+    setErro(null)
     setDados((d) => ({ ...d, [k]: v }))
+  }
+
+  // Converte o state do formulário no shape do PropostaMock
+  const toMock = () => ({
+    candidato_nome: dados.nome.trim(),
+    candidato_email: dados.candidato_email ?? '',
+    cargo: dados.cargo.trim(),
+    area: dados.area ?? '',
+    gestor: dados.gestor ?? '',
+    gestor_email: dados.gestor_email ?? '',
+    gestor_telefone: dados.gestor_telefone ?? '',
+    modelo: dados.modelo,
+    salario_centavos: Math.round((dados.salario || 0) * 100),
+    jornada: dados.jornada ?? '',
+    local: dados.local ?? '',
+    inicio: dados.inicio ?? '',
+    validade_em: dados.validade,
+    beneficios: dados.beneficios,
+    remetente: dados.remetente,
+    tutor_nome: dados.tutor_nome ?? '',
+    tutor_funcao: dados.tutor_funcao ?? '',
+    tutor_email: dados.tutor_email ?? '',
+    tutor_whatsapp: dados.tutor_whatsapp ?? '',
+    tutor_foto: dados.tutor_foto ?? '',
+  })
+
+  // Pega email do RH logado do cookie (mock)
+  const emailDoRh = () => {
+    if (typeof document === 'undefined') return 'rodrigo.martins@awnet.com.br'
+    const m = document.cookie.match(/rh_email=([^;]+)/)
+    return m ? decodeURIComponent(m[1]) : 'rodrigo.martins@awnet.com.br'
+  }
+
+  const validar = (): string | null => {
+    if (!dados.nome.trim()) return 'Preenche o nome do candidato pra continuar.'
+    if (!dados.cargo.trim()) return 'Preenche o cargo pra continuar.'
+    if (!dados.validade) return 'Define a validade da proposta.'
+    if (!dados.salario || dados.salario <= 0) return 'Define um salário mensal maior que zero.'
+    return null
+  }
+
+  const salvarRascunho = () => {
+    setErro(null)
+    if (modo === 'editar' && propostaId) {
+      acoesPropostas().atualizar(propostaId, toMock())
+      setSalvo('rascunho')
+      setTimeout(() => {
+        setSalvo(null)
+        router.push(`/rh/propostas/${propostaId}`)
+      }, 900)
+      return
+    }
+    // Rascunho: aceita mesmo com campos faltando
+    if (!dados.nome.trim()) {
+      setErro('Coloca pelo menos o nome do candidato pra salvar o rascunho.')
+      return
+    }
+    const nova = acoesPropostas().criar({
+      ...toMock(),
+      candidato_nome: dados.nome.trim() || 'Sem nome',
+      cargo: dados.cargo.trim() || 'A definir',
+      status: 'rascunho',
+      criada_por: emailDoRh(),
+    })
+    setSalvo('rascunho')
+    setTimeout(() => router.push(`/rh/propostas/${nova.id}`), 500)
+  }
+
+  const gerarProposta = () => {
+    const err = validar()
+    if (err) {
+      setErro(err)
+      return
+    }
+    setErro(null)
+    if (modo === 'editar' && propostaId) {
+      // Se editando um rascunho, "gerar" = salvar + promover pra pendente
+      acoesPropostas().atualizar(propostaId, { ...toMock(), status: 'pendente' })
+      setSalvo('link')
+      setTimeout(() => router.push(`/rh/propostas/${propostaId}`), 500)
+      return
+    }
+    const nova = acoesPropostas().criar({
+      ...toMock(),
+      status: 'pendente',
+      criada_por: emailDoRh(),
+    })
+    setSalvo('link')
+    setTimeout(() => router.push(`/rh/propostas/${nova.id}`), 500)
+  }
 
   const setBeneficiosText = (txt: string) => {
     const lista = txt
@@ -81,59 +173,31 @@ export function EditorProposta({
           <div className="flex gap-2">
             <button
               className="flex-1 inline-flex items-center justify-center gap-2 bg-white border border-aw-preto text-aw-preto px-4 py-2.5 text-sm font-semibold hover:bg-aw-preto hover:text-aw-branco transition-colors"
-              onClick={() => {
-                if (propostaId) {
-                  acoesPropostas().atualizar(propostaId, {
-                    candidato_nome: dados.nome,
-                    candidato_email: dados.candidato_email ?? '',
-                    cargo: dados.cargo,
-                    area: dados.area ?? '',
-                    gestor: dados.gestor ?? '',
-                    gestor_email: dados.gestor_email ?? '',
-                    gestor_telefone: dados.gestor_telefone ?? '',
-                    modelo: dados.modelo,
-                    salario_centavos: Math.round((dados.salario || 0) * 100),
-                    jornada: dados.jornada ?? '',
-                    local: dados.local ?? '',
-                    inicio: dados.inicio ?? '',
-                    validade_em: dados.validade,
-                    beneficios: dados.beneficios,
-                    remetente: dados.remetente,
-                    tutor_nome: dados.tutor_nome ?? '',
-                    tutor_funcao: dados.tutor_funcao ?? '',
-                    tutor_email: dados.tutor_email ?? '',
-                    tutor_whatsapp: dados.tutor_whatsapp ?? '',
-                    tutor_foto: dados.tutor_foto ?? '',
-                  })
-                }
-                setSalvo('rascunho')
-                setTimeout(() => {
-                  setSalvo(null)
-                  if (propostaId) router.push(`/rh/propostas/${propostaId}`)
-                }, 1400)
-              }}
+              onClick={salvarRascunho}
               type="button"
             >
               {modo === 'editar' ? 'Salvar alterações' : 'Salvar rascunho'}
             </button>
             <button
               className="flex-1 inline-flex items-center justify-center gap-2 bg-aw-preto text-aw-branco px-4 py-2.5 text-sm font-semibold hover:bg-aw-grafite transition-colors"
-              onClick={() => {
-                setSalvo('link')
-                setTimeout(() => setSalvo(null), 2500)
-              }}
+              onClick={gerarProposta}
               type="button"
             >
-              Gerar link do candidato
+              {modo === 'editar' ? 'Gerar link do candidato' : 'Gerar proposta'}
             </button>
           </div>
-          {salvo && (
+          {erro && (
+            <div className="mt-3 text-[12px] text-red-700 bg-red-50 border border-red-200 px-3 py-2 font-medium">
+              {erro}
+            </div>
+          )}
+          {salvo && !erro && (
             <div className="mt-3 text-[12px] text-aw-tiffany-forte font-semibold">
               {salvo === 'rascunho'
                 ? modo === 'editar'
                   ? 'Alterações salvas. Voltando pro detalhe…'
-                  : 'Rascunho salvo. (mock — sem backend ainda)'
-                : 'Link gerado. (mock — no fluxo real, aparece o botão Copiar aqui)'}
+                  : 'Rascunho salvo. Abrindo o detalhe…'
+                : 'Proposta gerada. Abrindo o detalhe pra copiar o link…'}
             </div>
           )}
         </div>

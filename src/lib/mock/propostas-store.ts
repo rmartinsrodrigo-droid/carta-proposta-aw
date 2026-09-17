@@ -2,6 +2,8 @@
 
 import { useSyncExternalStore } from 'react'
 import { propostasMock, type PropostaMock } from '@/lib/mock/propostas'
+import { slugify } from '@/lib/slug'
+import type { PropostaStatus } from '@/types/proposta'
 
 const CHAVE = 'aw:carta-proposta:propostas'
 
@@ -90,6 +92,35 @@ export function acoesPropostas() {
             : p
         )
       )
+    },
+    criar(
+      dados: Omit<
+        PropostaMock,
+        'id' | 'slug' | 'status' | 'criada_em' | 'atualizada_em' | 'abriu_em' | 'aceita_em' | 'recusada_em' | 'recusa_motivo'
+      > & { status?: PropostaStatus; criada_por: string }
+    ): PropostaMock {
+      const now = new Date().toISOString()
+      const baseSlug = slugify(dados.candidato_nome) || 'proposta'
+      // Garante slug único
+      let slug = baseSlug
+      let n = 2
+      while (atual().some((p) => p.slug === slug)) {
+        slug = `${baseSlug}-${n++}`
+      }
+      const nova: PropostaMock = {
+        ...dados,
+        id: novoId(),
+        slug,
+        status: dados.status ?? 'pendente',
+        criada_em: now,
+        atualizada_em: now,
+        abriu_em: null,
+        aceita_em: null,
+        recusada_em: null,
+        recusa_motivo: null,
+      }
+      setState([nova, ...atual()])
+      return nova
     },
     duplicar(id: string): PropostaMock | null {
       const original = atual().find((p) => p.id === id)
