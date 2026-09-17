@@ -15,23 +15,207 @@
   background: var(--aw-preto);
   min-height: 100vh;
 }
-/* Desktop: apresenta a carta como "documento" centralizado com respiro nas laterais.
-   Mobile mantém edge-to-edge full-screen. */
+/* ≥ 768px: fundo institucional + watermark grande a|w cobrindo o vazio.
+   Carta segue centralizada em 480px enquanto os painéis não couberem. */
 @media (min-width: 768px) {
   .stageCandidate {
-    padding: 48px 20px;
+    padding: 40px 20px;
     align-items: flex-start;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+    background:
+      radial-gradient(ellipse at 15% 30%, rgba(161, 224, 221, 0.06) 0%, transparent 50%),
+      radial-gradient(ellipse at 85% 70%, rgba(161, 224, 221, 0.04) 0%, transparent 50%),
+      linear-gradient(135deg, #050505 0%, #000 60%, #061a1a 100%);
+  }
+  .stageCandidate::before {
+    content: "a|w";
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: inherit;
+    font-weight: 800;
+    font-size: 42vw;
+    line-height: 1;
+    letter-spacing: -0.05em;
+    color: rgba(161, 224, 221, 0.035);
+    pointer-events: none;
+    user-select: none;
+    z-index: 0;
   }
   .stageCandidate .phone {
     background: transparent;
-    box-shadow: 0 40px 100px -20px rgba(0, 0, 0, 0.55);
+    box-shadow: 0 40px 100px -20px rgba(0, 0, 0, 0.75);
     max-width: 480px;
+    position: relative;
+    z-index: 1;
   }
   .stageCandidate .screen {
-    height: calc(100vh - 96px);
+    height: calc(100vh - 80px);
     max-height: 900px;
     min-height: 640px;
     border-radius: 6px;
+  }
+}
+
+/* Painéis institucionais escondidos até caberem. */
+.deskAside { display: none; }
+.deskAsideRight { display: none; }
+
+/* ≥ 1000px: aparece o painel institucional à esquerda + carta.
+   Watermark de fundo continua, mas fica em segundo plano. */
+@media (min-width: 1000px) {
+  .stageCandidate {
+    padding: 40px 24px;
+    gap: 40px;
+    align-items: center;
+    justify-content: center;
+  }
+  .stageCandidate::before {
+    font-size: 34vw;
+    color: rgba(161, 224, 221, 0.028);
+  }
+  .deskAside {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    flex: 0 1 300px;
+    min-width: 260px;
+    height: min(900px, calc(100vh - 80px));
+    min-height: 640px;
+    color: var(--aw-branco);
+    padding: 8px 0;
+    position: relative;
+    z-index: 1;
+  }
+  .deskAsideLogo {
+    height: 34px;
+    width: auto;
+    display: block;
+  }
+  .deskAsideKicker {
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--aw-tiffany);
+    margin-bottom: 16px;
+  }
+  .deskAsideH2 {
+    font-weight: 800;
+    font-size: 34px;
+    line-height: 1.05;
+    letter-spacing: -0.025em;
+    color: var(--aw-branco);
+    margin: 0 0 18px;
+  }
+  .deskAsideP {
+    font-size: 14px;
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.72);
+    max-width: 320px;
+    margin: 0;
+  }
+  .deskAsideP strong {
+    color: var(--aw-tiffany);
+    font-weight: 700;
+  }
+  .deskAsideFoot {
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--aw-prata);
+    font-weight: 600;
+  }
+  .deskAsideFootLinha {
+    width: 40px;
+    height: 2px;
+    background: var(--aw-tiffany);
+    margin-bottom: 12px;
+  }
+}
+
+/* ≥ 1200px: aparece coluna DIREITA com watermark vertical + info. */
+@media (min-width: 1200px) {
+  .stageCandidate {
+    padding: 56px 32px;
+    gap: 56px;
+  }
+  .stageCandidate::before {
+    font-size: 28vw;
+    color: rgba(161, 224, 221, 0.022);
+  }
+  .deskAside {
+    flex: 0 1 340px;
+    min-width: 300px;
+  }
+  .deskAsideH2 {
+    font-size: 40px;
+  }
+  .deskAsideRight {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-end;
+    text-align: right;
+    flex: 0 1 200px;
+    min-width: 160px;
+    max-width: 240px;
+    height: min(900px, calc(100vh - 112px));
+    min-height: 640px;
+    padding: 8px 0;
+    color: var(--aw-prata);
+    position: relative;
+    z-index: 1;
+  }
+  .deskAsideRightWatermark {
+    font-family: inherit;
+    font-weight: 800;
+    font-size: 88px;
+    line-height: 0.9;
+    letter-spacing: -0.04em;
+    color: rgba(161, 224, 221, 0.14);
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+    user-select: none;
+    text-transform: uppercase;
+  }
+  .deskAsideRightInfo {
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--aw-prata);
+    font-weight: 600;
+    line-height: 1.6;
+  }
+  .deskAsideRightInfo strong {
+    color: var(--aw-tiffany);
+    font-weight: 700;
+    display: block;
+    margin-bottom: 6px;
+  }
+}
+
+/* ≥ 1600px: respiro e escala maior. */
+@media (min-width: 1600px) {
+  .stageCandidate {
+    gap: 100px;
+    padding: 80px 64px;
+  }
+  .deskAside {
+    flex: 0 1 440px;
+  }
+  .deskAsideH2 {
+    font-size: 52px;
+  }
+  .deskAsideRight {
+    flex: 0 1 260px;
+    max-width: 300px;
+  }
+  .deskAsideRightWatermark {
+    font-size: 120px;
   }
 }
 
