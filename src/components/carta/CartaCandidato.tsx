@@ -381,9 +381,10 @@ export function CartaCandidato({
                   <Image
                     src="/ivo-wohnrath.png"
                     alt="Ivo Wohnrath, CEO da Athié Wohnrath"
-                    width={720}
-                    height={900}
-                    sizes="(max-width: 480px) 100vw, 460px"
+                    width={1200}
+                    height={1500}
+                    quality={92}
+                    sizes="(max-width: 480px) 100vw, (max-width: 1024px) 100vw, 55vw"
                   />
                 </div>
                 <div className={styles.ceoBody}>

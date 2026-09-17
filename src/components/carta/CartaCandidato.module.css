@@ -115,96 +115,240 @@
 }
 
 /* ───── DESKTOP (≥ 1024px) ─────
-   Padding assimétrico controla max-width interno em 1120px.
-   Layouts multi-coluna intencionais dentro dessa faixa. */
+   Filosofia dessa versão: TUDO CENTRALIZADO.
+   Alinhamento consistente ao centro (não F-pattern).
+   Fontes maiores e proporcionais (sem parecerem perdidas em cards grandes).
+   Faixas cromáticas (salário) vão de borda a borda.
+   Só afeta desktop — mobile e tablet ficam intactos. */
 @media (min-width: 1024px) {
   .c section {
     padding-block: clamp(96px, 8vw, 140px);
     padding-inline: max(64px, calc((100% - 1120px) / 2));
+    align-items: center;
+    text-align: center;
   }
-  .h1 { letter-spacing: -0.03em; max-width: 800px; }
-  .heroSubtitle { max-width: 560px; }
-  /* GPTW: 5 pilares em linha */
-  .gptwBlocos { flex-direction: row; flex-wrap: wrap; gap: 16px; }
-  .gptwBloco { flex: 1 1 calc(20% - 13px); min-width: 200px; padding: 24px; }
-  .gptwBloco h3 { font-size: 15px; }
-  /* Próximos passos: grid direto na section coloca kicker/h2/intro
-     em linha própria (span 3) e os 3 steps na linha seguinte. */
+
+  /* Tipografia desktop maior — proporcional aos containers largos */
+  .h1 { font-size: clamp(72px, 6.5vw, 120px); letter-spacing: -0.03em; max-width: 1000px; }
+  .heroSaudacao { font-size: clamp(24px, 1.8vw, 32px); }
+  .heroSubtitle { font-size: clamp(20px, 1.5vw, 26px); max-width: 640px; }
+  .welcomeH2 { font-size: clamp(40px, 3.6vw, 56px); }
+  .welcome p { font-size: clamp(19px, 1.4vw, 24px); line-height: 1.5; }
+  .about h2, .valores h2, .gptw h2, .steps h2, .agenda h2 { font-size: clamp(40px, 3.4vw, 56px); }
+  .about p, .gptwIntro, .stepsIntro, .agendaIntro { font-size: clamp(17px, 1.2vw, 22px); }
+  .offer h2 { font-size: clamp(44px, 3.8vw, 64px); }
+  .accept h2, .aceitouTitulo { font-size: clamp(48px, 4.2vw, 72px); }
+  .accept p { font-size: clamp(17px, 1.2vw, 22px); }
+  .salaryV { font-size: clamp(60px, 6vw, 96px); }
+
+  /* ── HERO centralizado ── */
+  .hero {
+    justify-content: space-between;
+    align-items: center;
+    text-align: center;
+  }
+  .heroTop {
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+    max-width: none;
+  }
+  .heroBottom {
+    align-items: center;
+    text-align: center;
+    max-width: none;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+  .heroDash { margin: 0 auto 24px; }
+  .heroSaudacao, .heroSubtitle { margin-left: auto; margin-right: auto; }
+  .hero .heroCta { align-self: center; margin-top: 8px; padding: 18px 28px; font-size: 15px; }
+
+  /* ── WELCOME já centralizado, garante espaçamento ── */
+  .welcome p { max-width: 720px; margin-left: auto; margin-right: auto; }
+
+  /* ── CEO: split refinado com padding igual dos dois lados ── */
+  .c section.ceo {
+    display: grid;
+    grid-template-columns: 5fr 6fr;
+    text-align: left;
+    align-items: stretch;
+    padding: 0 !important;
+    min-height: min(90vh, 820px);
+  }
+  .ceoBody {
+    padding: clamp(64px, 6vw, 96px);
+    align-items: flex-start;
+    text-align: left;
+  }
+  .ceoBody > * { max-width: 560px; margin-left: 0; }
+  .ceoQuote { font-size: 56px; }
+
+  /* ── ABOUT centralizado, stats em card único ── */
+  .about > * { margin-left: auto; margin-right: auto; }
+  .about p { max-width: 780px; }
+  .stats {
+    grid-template-columns: repeat(3, 1fr);
+    max-width: 900px;
+    margin: 48px auto 0;
+    gap: 40px 48px;
+  }
+  .stats > div { text-align: center; }
+  .statN { font-size: clamp(40px, 3.2vw, 52px); }
+  .statL { font-size: 14px; }
+
+  /* ── VALORES centralizado, lista em 2 colunas centrada ── */
+  .valores > * { margin-left: auto; margin-right: auto; }
+  .valoresLista {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 48px;
+    border-top: none;
+    max-width: 1000px;
+    margin: 24px auto 0;
+    text-align: left;
+  }
+  .valorItem { border-top: 1px solid rgba(255,255,255,0.12); }
+
+  /* ── GPTW centralizado, selo + blocos alinhados ── */
+  .gptw > * { margin-left: auto; margin-right: auto; }
+  .gptwIntro { max-width: 720px; }
+  .gptwSelo { margin: 24px auto 48px; }
+  .gptwBlocos {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 16px;
+    justify-content: center;
+    max-width: 1120px;
+    margin: 0 auto;
+  }
+  .gptwBloco {
+    flex: 1 1 calc(50% - 8px);
+    min-width: 260px;
+    max-width: 340px;
+    padding: 28px;
+    text-align: left;
+  }
+  .gptwBloco h3 { font-size: 16px; }
+  .gptwBloco p { font-size: 14.5px; }
+
+  /* ── OFFER: título centralizado, salário FULL-BLEED cobrindo a largura ── */
+  .offer {
+    padding-inline: 0 !important;
+    align-items: stretch;
+    text-align: center;
+  }
+  .offer > .printLogo,
+  .offer > .offerHead,
+  .offer > h2 {
+    padding-inline: max(64px, calc((100% - 1120px) / 2));
+    text-align: center;
+  }
+  .offer .offerHead {
+    justify-content: center;
+    gap: 32px;
+    margin-bottom: 24px;
+  }
+  .offer h2 { margin-bottom: 40px; }
+  .offer .salary {
+    width: 100%;
+    margin: 0 0 48px;
+    padding: clamp(56px, 5vw, 80px) max(64px, calc((100% - 1120px) / 2));
+    text-align: center;
+  }
+  .offer .salaryL { font-size: 13px; letter-spacing: 0.18em; }
+  .offer .salaryM { font-size: 15px; margin-top: 12px; }
+  .offer .rows,
+  .offer .bens,
+  .offer .tutor {
+    max-width: 1120px;
+    width: 100%;
+    padding-inline: max(64px, calc((100% - 1120px) / 2));
+    margin-left: auto;
+    margin-right: auto;
+    text-align: left;
+  }
+  .offer .rows { margin-bottom: 40px; }
+  .offer .bens { margin-bottom: 40px; }
+  .offer .bens ul { grid-template-columns: repeat(4, 1fr); gap: 12px; }
+  .offer .bens li { font-size: 14px; padding: 18px 14px; }
+  .offer .tutor {
+    margin-top: 0;
+    padding-top: 32px;
+    border-top: 1px solid var(--aw-prata-wash);
+    text-align: left;
+  }
+  .offer .tutorCard { max-width: 640px; }
+  .offer .row { padding: 18px 0; }
+  .offer .rowK { flex: 0 0 220px; font-size: 12px; }
+  .offer .rowVal { font-size: 15px; }
+
+  /* ── STEPS centralizado, 3 colunas de cards ── */
   .c section.steps {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     column-gap: 32px;
-    row-gap: 20px;
+    row-gap: 24px;
     align-items: start;
+    text-align: center;
   }
   .steps > .kicker,
   .steps > h2,
   .steps > .stepsIntro {
     grid-column: 1 / -1;
     max-width: 720px;
+    margin-left: auto;
+    margin-right: auto;
   }
   .step {
     flex-direction: column;
-    text-align: left;
+    text-align: center;
+    align-items: center;
+    padding: 32px 24px;
     padding-bottom: 0;
-    padding-right: 24px;
-    border-right: 1px solid rgba(255,255,255,0.1);
+    border-right: 1px solid rgba(255,255,255,0.08);
   }
-  .step:last-child { border-right: none; padding-right: 0; }
+  .step:last-child { border-right: none; }
   .step::after { display: none; }
-  .stepNum { margin-bottom: 20px; width: 40px; height: 40px; font-size: 16px; }
-  /* Agenda em 2 colunas */
+  .stepNum {
+    margin: 0 auto 24px;
+    width: 48px;
+    height: 48px;
+    font-size: 18px;
+  }
+  .step h3 { font-size: 18px; margin-bottom: 8px; }
+  .step p { font-size: 14.5px; }
+  .stepData { font-size: 28px; margin: 8px 0 12px; }
+
+  /* ── AGENDA centralizado, 2 colunas com scrap-book vibe ── */
+  .agenda > * { margin-left: auto; margin-right: auto; }
   .agendaLista {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    column-gap: 48px;
+    column-gap: 56px;
     border-top: none;
+    max-width: 1000px;
+    margin: 24px auto 0;
+    text-align: left;
   }
   .agendaItem {
     border-top: 1px solid var(--aw-prata-wash);
     border-bottom: none;
+    padding: 18px 0;
   }
-  /* Valores em 2 colunas */
-  .valoresLista {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    column-gap: 48px;
-    border-top: none;
-  }
-  .valorItem { border-top: 1px solid rgba(255,255,255,0.12); }
-  /* Benefícios em 4 colunas */
-  .bens ul { grid-template-columns: repeat(4, 1fr); }
-  /* Stats em 6 colunas */
-  .stats { grid-template-columns: repeat(6, 1fr); }
-  /* CEO: proporção mais elegante (60/40 texto/imagem) */
-  .c section.ceo { display: grid; grid-template-columns: 6fr 5fr; }
-  /* ─── OFFER: card unificado com layout 2 colunas ───
-     Esquerda: salário grande + rows do cargo
-     Direita: benefícios + tutor
-     Título e header ficam full-width em cima. */
-  .offer {
-    display: grid !important;
-    grid-template-columns: repeat(12, 1fr);
-    gap: 24px 48px;
-    align-items: start;
-    padding: clamp(96px, 8vw, 140px) clamp(64px, 6vw, 96px);
-  }
-  .offer > * {
-    max-width: none;
-    margin: 0;
-    width: auto;
-  }
-  .offer .printLogo,
-  .offer .offerHead,
-  .offer h2 {
-    grid-column: 1 / -1;
-  }
-  .offer .salary { grid-column: 1 / span 7; margin: 0; padding: 40px; }
-  .offer .rows { grid-column: 1 / span 7; margin: 0; }
-  .offer .bens { grid-column: 8 / span 5; grid-row: span 2; margin: 0; }
-  .offer .bens ul { grid-template-columns: repeat(2, 1fr); }
-  .offer .tutor { grid-column: 8 / span 5; margin: 32px 0 0; padding-top: 32px; }
-  .offer .salaryV { font-size: clamp(48px, 5vw, 84px); }
+  .agendaHora { font-size: 17px; }
+  .agendaDesc { font-size: 14.5px; }
+
+  /* ── ACCEPT centralizado (já estava) — só reforça hierarquia ── */
+  .accept > * { margin-left: auto; margin-right: auto; }
+  .accept p { max-width: 640px; }
+  .accept .val { display: inline-block; margin: 0 auto 32px; font-size: 13px; padding: 10px 16px; }
+  .accept .btn { max-width: 440px; font-size: 16px; padding: 20px; }
+
+  /* ── FOOT ── */
+  .foot > * { margin-left: auto; margin-right: auto; }
+  .foot { text-align: center; }
 }
 
 /* ───── DESKTOP WIDE (≥ 1440px) ─────
@@ -213,7 +357,20 @@
   .c section {
     padding-inline: max(80px, calc((100% - 1280px) / 2));
   }
-  .h1 { max-width: 900px; }
+  .offer > .printLogo,
+  .offer > .offerHead,
+  .offer > h2,
+  .offer .salary,
+  .offer .rows,
+  .offer .bens,
+  .offer .tutor {
+    padding-inline: max(80px, calc((100% - 1280px) / 2));
+  }
+  .offer .rows,
+  .offer .bens,
+  .offer .tutor {
+    max-width: 1280px;
+  }
 }
 
 /* ───── DESKTOP XL (≥ 1920px) ─────
@@ -221,6 +378,20 @@
 @media (min-width: 1920px) {
   .c section {
     padding-inline: max(96px, calc((100% - 1440px) / 2));
+  }
+  .offer > .printLogo,
+  .offer > .offerHead,
+  .offer > h2,
+  .offer .salary,
+  .offer .rows,
+  .offer .bens,
+  .offer .tutor {
+    padding-inline: max(96px, calc((100% - 1440px) / 2));
+  }
+  .offer .rows,
+  .offer .bens,
+  .offer .tutor {
+    max-width: 1440px;
   }
 }
 
