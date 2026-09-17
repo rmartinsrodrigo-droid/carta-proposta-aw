@@ -15,23 +15,212 @@
   background: var(--aw-preto);
   min-height: 100vh;
 }
-/* Desktop: apresenta a carta como "documento" centralizado com respiro nas laterais.
-   Mobile mantém edge-to-edge full-screen. */
+/* ─────────────────────────────────────────────────────────────
+   RESPONSIVE FULL — mode="candidate" preenche a tela toda em
+   qualquer tamanho. UX principles aplicados:
+
+   - Mesmo conteúdo em mobile / tablet / desktop
+   - Hierarquia visual consistente (kicker → h2 → texto → cta)
+   - Largura de leitura: 60-75ch pra parágrafos, mais largo p/ listas
+   - Tipografia fluida via clamp() (sem saltos abruptos)
+   - Ritmo vertical: cada seção respira mas sem forçar 100vh
+   - F-pattern: âncora sempre à esquerda, títulos alinhados
+   ───────────────────────────────────────────────────────────── */
+
+/* Carta full-screen (sem "cartão flutuante") em qualquer tela */
+.stageCandidate .phone {
+  width: 100%;
+  max-width: 100%;
+  border-radius: 0;
+  padding: 0;
+  box-shadow: none;
+  background: var(--aw-preto);
+}
+.stageCandidate .phone::before { display: none; }
+.stageCandidate .screen {
+  border-radius: 0;
+  height: 100vh;
+}
+
+/* ───── TIPOGRAFIA FLUIDA (aplica em todos os tamanhos) ─────
+   clamp(min, preferred, max) → escala suave entre viewports,
+   sem "saltos" nos breakpoints. */
+@media (min-width: 640px) {
+  .h1 { font-size: clamp(44px, 6vw, 112px); line-height: 1.02; }
+  .heroSaudacao { font-size: clamp(22px, 2vw, 28px); }
+  .heroSubtitle { font-size: clamp(17px, 1.4vw, 22px); }
+  .welcomeH2 { font-size: clamp(26px, 3vw, 48px); }
+  .about h2, .valores h2, .gptw h2, .steps h2, .agenda h2 { font-size: clamp(24px, 2.6vw, 44px); }
+  .offer h2 { font-size: clamp(28px, 3.2vw, 52px); }
+  .accept h2, .aceitouTitulo { font-size: clamp(32px, 3.6vw, 64px); }
+  .salaryV { font-size: clamp(38px, 4.4vw, 72px); }
+  .ceoNome { font-size: clamp(20px, 1.8vw, 28px); }
+  .welcome p { font-size: clamp(15.5px, 1.15vw, 18px); }
+  .about p, .agendaIntro, .stepsIntro { font-size: clamp(14.5px, 1.05vw, 17px); }
+}
+
+/* ───── TABLET (≥ 768px) ─────
+   Padding lateral assimétrico centraliza o conteúdo até 720px sem
+   afetar filhos individuais (imagens, selos, cards continuam livres).
+   min-height suave (60-80vh), sem forçar 100vh. */
 @media (min-width: 768px) {
-  .stageCandidate {
-    padding: 48px 20px;
-    align-items: flex-start;
+  .c section {
+    padding-block: clamp(64px, 8vw, 120px);
+    padding-inline: max(32px, calc((100% - 720px) / 2));
+    min-height: min(80vh, 720px);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
   }
-  .stageCandidate .phone {
-    background: transparent;
-    box-shadow: 0 40px 100px -20px rgba(0, 0, 0, 0.55);
-    max-width: 480px;
+  /* Hero mantém composição própria (top + bottom) */
+  .hero {
+    justify-content: space-between;
+    min-height: 100vh;
+    padding-top: clamp(32px, 4vw, 56px);
+    padding-bottom: clamp(48px, 6vw, 80px);
   }
-  .stageCandidate .screen {
-    height: calc(100vh - 96px);
-    max-height: 900px;
-    min-height: 640px;
-    border-radius: 6px;
+  .heroTop img { height: clamp(22px, 2vw, 32px); }
+  /* Welcome centraliza pra dar destaque à mensagem-chave */
+  .welcome { text-align: center; align-items: center; }
+  .welcome > * { margin-left: auto; margin-right: auto; max-width: 640px; }
+  /* CEO em split horizontal — especificidade elevada pra sobrepor .c section */
+  .c section.ceo {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: stretch;
+    padding: 0 !important;
+    min-height: min(85vh, 780px);
+  }
+  .ceoPhoto {
+    aspect-ratio: auto;
+    height: 100%;
+    min-height: 480px;
+  }
+  .ceoBody {
+    padding: clamp(48px, 6vw, 96px) clamp(32px, 5vw, 80px);
+    justify-content: center;
+    display: flex;
+    flex-direction: column;
+  }
+  .ceoBody > * { max-width: 480px; margin: 0; }
+  /* Benefícios em 3 colunas */
+  .bens ul { grid-template-columns: repeat(3, 1fr); }
+  /* Stats em 3 colunas */
+  .stats { grid-template-columns: repeat(3, 1fr); }
+  /* Accept centralizado — CTA final */
+  .accept { text-align: center; align-items: center; }
+  .accept > * { margin-left: auto; margin-right: auto; max-width: 560px; }
+  .accept .val { display: inline-block; margin: 0 auto 26px; }
+  .accept .btn { max-width: 400px; }
+}
+
+/* ───── DESKTOP (≥ 1024px) ─────
+   Padding assimétrico controla max-width interno em 1120px.
+   Layouts multi-coluna intencionais dentro dessa faixa. */
+@media (min-width: 1024px) {
+  .c section {
+    padding-block: clamp(96px, 8vw, 140px);
+    padding-inline: max(64px, calc((100% - 1120px) / 2));
+  }
+  .h1 { letter-spacing: -0.03em; max-width: 800px; }
+  .heroSubtitle { max-width: 560px; }
+  /* GPTW: 5 pilares em linha */
+  .gptwBlocos { flex-direction: row; flex-wrap: wrap; gap: 16px; }
+  .gptwBloco { flex: 1 1 calc(20% - 13px); min-width: 200px; padding: 24px; }
+  .gptwBloco h3 { font-size: 15px; }
+  /* Próximos passos: grid direto na section coloca kicker/h2/intro
+     em linha própria (span 3) e os 3 steps na linha seguinte. */
+  .c section.steps {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    column-gap: 32px;
+    row-gap: 20px;
+    align-items: start;
+  }
+  .steps > .kicker,
+  .steps > h2,
+  .steps > .stepsIntro {
+    grid-column: 1 / -1;
+    max-width: 720px;
+  }
+  .step {
+    flex-direction: column;
+    text-align: left;
+    padding-bottom: 0;
+    padding-right: 24px;
+    border-right: 1px solid rgba(255,255,255,0.1);
+  }
+  .step:last-child { border-right: none; padding-right: 0; }
+  .step::after { display: none; }
+  .stepNum { margin-bottom: 20px; width: 40px; height: 40px; font-size: 16px; }
+  /* Agenda em 2 colunas */
+  .agendaLista {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 48px;
+    border-top: none;
+  }
+  .agendaItem {
+    border-top: 1px solid var(--aw-prata-wash);
+    border-bottom: none;
+  }
+  /* Valores em 2 colunas */
+  .valoresLista {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 48px;
+    border-top: none;
+  }
+  .valorItem { border-top: 1px solid rgba(255,255,255,0.12); }
+  /* Benefícios em 4 colunas */
+  .bens ul { grid-template-columns: repeat(4, 1fr); }
+  /* Stats em 6 colunas */
+  .stats { grid-template-columns: repeat(6, 1fr); }
+  /* CEO: proporção mais elegante (60/40 texto/imagem) */
+  .c section.ceo { display: grid; grid-template-columns: 6fr 5fr; }
+  /* ─── OFFER: card unificado com layout 2 colunas ───
+     Esquerda: salário grande + rows do cargo
+     Direita: benefícios + tutor
+     Título e header ficam full-width em cima. */
+  .offer {
+    display: grid !important;
+    grid-template-columns: repeat(12, 1fr);
+    gap: 24px 48px;
+    align-items: start;
+    padding: clamp(96px, 8vw, 140px) clamp(64px, 6vw, 96px);
+  }
+  .offer > * {
+    max-width: none;
+    margin: 0;
+    width: auto;
+  }
+  .offer .printLogo,
+  .offer .offerHead,
+  .offer h2 {
+    grid-column: 1 / -1;
+  }
+  .offer .salary { grid-column: 1 / span 7; margin: 0; padding: 40px; }
+  .offer .rows { grid-column: 1 / span 7; margin: 0; }
+  .offer .bens { grid-column: 8 / span 5; grid-row: span 2; margin: 0; }
+  .offer .bens ul { grid-template-columns: repeat(2, 1fr); }
+  .offer .tutor { grid-column: 8 / span 5; margin: 32px 0 0; padding-top: 32px; }
+  .offer .salaryV { font-size: clamp(48px, 5vw, 84px); }
+}
+
+/* ───── DESKTOP WIDE (≥ 1440px) ─────
+   Escala pra monitores grandes sem esticar linha de leitura. */
+@media (min-width: 1440px) {
+  .c section {
+    padding-inline: max(80px, calc((100% - 1280px) / 2));
+  }
+  .h1 { max-width: 900px; }
+}
+
+/* ───── DESKTOP XL (≥ 1920px) ─────
+   Full HD e maior — mantém max-width confortável. */
+@media (min-width: 1920px) {
+  .c section {
+    padding-inline: max(96px, calc((100% - 1440px) / 2));
   }
 }
 
@@ -56,14 +245,8 @@
   border-radius: 3px;
   z-index: 3;
 }
-.stageCandidate .phone {
-  width: min(460px, 100%);
-  border-radius: 0;
-  padding: 0;
-  box-shadow: none;
-  background: transparent;
-}
-.stageCandidate .phone::before { display: none; }
+/* Regra sobrescrita pelo bloco RESPONSIVE FULL acima —
+   .stageCandidate .phone agora sempre ocupa 100% (mobile-first + escala). */
 
 .screen {
   background: var(--aw-preto);
